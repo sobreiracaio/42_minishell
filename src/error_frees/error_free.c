@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:37:39 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/04/30 16:38:28 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/08 00:40:42 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_exit(t_shell *shell)
 {
 	if (shell->line)
 		free(shell->line);
-	free_cmd(shell->cmd);
+	//free_cmd(shell->cmd);
 	envp_destroy(shell->env);
 	if (shell->envp)
 		ft_free_array(shell->envp);

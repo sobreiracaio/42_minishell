@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/07 17:51:35 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/08 00:39:10 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@
 # define PROMPT_BEGIN "┎─── "
 # define PROMPT_END "\n┖─❯ "
 
-//# define STOP 0
-//# define CONTINUE 1
-//# define RESTORE 2
+# define STOP 0
+# define CONTINUE 1
+# define RESTORE 2
 
 # define EXEC 300
 # define REDIR 301
