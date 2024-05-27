@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/27 11:49:05 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:11:47 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # define NOT_EXP "|></ \t\n\v\f\r"
 # define OPANDSP "|>< \t\n\v\f\r"
 
-# define ERROR_TITLE "-minishell: "
+# define ERROR_TITLE "minishell: "
 # define ERROR_QUOTE "unclosed quotes"
 # define ERROR_SINTAX "syntax error"
 # define ERROR_HERE_DOC "unexpected EOF while looking for matching `"
@@ -129,10 +129,65 @@ typedef struct s_pipe
 	t_cmd	*right;
 }			t_pipe;
 
+
+//process_line file
+int     process_line(t_shell *shell);
+int     inside_quotes(char *line, char *current_position);
+
+//envp1 file - create
+void	convert_envp(char **envp, t_shell *shell);
+void 	convert_envp_to_char(t_shell *shell);
+
+//envp2 file - add/rm
+t_env 	*add_node_to_envp_list(t_shell *shell, char *key, char *value, int visible);
+bool env_rm(char *key, t_shell *shell);
+void ft_envlstdelone(t_env *lst, void (*del)(void*));
+
+//envp3 file - clear/modify
+bool	env_mod(t_shell *shell, char *target, char *new_value);
+void	ft_envlstclear(t_env *lst, void (*del)(void*));
+
+//envp4 file - sort/export/get/print
+t_env	*envp_to_sort_list(t_shell *shell);
+void	env_export(t_shell *shell, char *key, char *value, int visible);
+char	*env_get_value(char *key, t_shell *shell);
+void	envp_print(t_shell *shell);
+
+//Parser
+t_cmd	*exec_cmd(void);
+t_cmd	*pipe_cmd(t_cmd *left, t_cmd *right);
+t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd);
+int	parse_cmd(t_shell *shell);
+int	peek(t_shell *shell, char *op);
+int	gettoken(t_shell *sh, char **token);
+t_cmd	*parsepipe(t_shell *shell);
+
+// Expand
+void	expand_arg(t_shell *shell, char **arg);
+int	    expand_free(char *key, int i, int j, char **line);
+int	    expand_line(char *space, int i, int j, char **line);
+void	trim_quotes(char *arg, int *len);
+void    trim_arg(t_shell *shell, char *arg);
+
+// error_frees
+int	    print_error_syntax(t_shell *shell, char *msg, int exit);
+int	    print_error(t_shell *shell, char *msg, char *msg2, int exit);
+void	free_exit(t_shell *shell);
+int	    error_inside(t_shell *shell, char *cmd, char *arg, int error_code);
+void	free_cmd(t_cmd *cmd);
+
+// run_cmd
+void	run_cmd(t_shell *shell, t_cmd *cmd);
+void	run_exec(t_shell *shell, t_exec *cmd);
+void	run_redir(t_shell *shell, t_redir *cmd);
+void	run_pipe(t_shell *shell, t_pipe *cmd);
 void	check(int result, char *msg, int exit);
-void run_cmd(t_shell *shell, t_cmd *cmd);
-int run_builtin(t_shell* shell, t_exec *cmd );
-void ms_echo(t_exec *cmd);
+t_cmd	*here_cmd(t_cmd *cmd, char *eof);
+void	run_heredoc(t_shell *shell, t_here *here);
+
+// built-in
+int     run_builtin(t_shell* shell, t_exec *cmd );
+void    ms_echo(t_exec *cmd);
 void	ms_cd(t_shell *shell, t_exec *cmd);
 bool	ms_chdir(t_shell *shell, char *path);
 void	ms_pwd(t_shell *shell, t_exec *cmd);
@@ -142,46 +197,17 @@ void	ms_env(t_shell *shell, t_exec *cmd);
 void	ms_exit(t_shell *shell, t_exec *cmd);
 
 
-int     process_line(t_shell *shell);
-void	free_exit(t_shell *shell);
 
 
-void	convert_envp(char **envp, t_shell *shell);
-void	ft_envlstclear(t_env *lst, void (*del)(void*));
-void 	convert_envp_to_char(t_shell *shell);
-t_env 	*add_node_to_envp_list(t_shell *shell, char *key, char *value, int visible);
-t_env	*envp_to_sort_list(t_shell *shell);
-char	*env_get_value(char *key, t_shell *shell);
-
-void 	ft_envlstdelone(t_env *lst, void (*del)(void*));
-int		expand_line(char *key, int i, int j, char **line);
-int		print_error_syntax(char *msg, int exit);
-int	    print_error(t_shell *shell, char *msg, char *msg2, int exit);
-bool	env_mod(t_shell *shell, char *target, char *new_value);
-void	env_export(t_shell *shell, char *key, char *value, int visible);
-void	envp_print(t_shell *shell);
-
-void	run_cmd(t_shell *shell, t_cmd *cmd);
-void	run_exec(t_shell *shell, t_exec *cmd);
-void	run_redir(t_shell *shell, t_redir *cmd);
-void	run_heredoc(t_shell *shell, t_here *here);
-t_cmd	*here_cmd(t_cmd *cmd, char *eof);
-
-void	expand_arg(t_shell *shell, char **arg);
-int	expand_line(char *space, int i, int j, char **line);
-void	run_pipe(t_shell *shell, t_pipe *cmd);
-void	free_cmd(t_cmd *cmd);
 
 
-int	parse_cmd(t_shell *shell);
-t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd);
-t_cmd	*pipe_cmd(t_cmd *left, t_cmd *right);
-t_cmd	*exec_cmd(void);
-void trim_arg(char *arg);
-void	trim_quotes(char *arg, int *len);
+
+
+
 
 t_cmd	*parsepipe(t_shell *shell);
-int	peek(t_shell *shell, char *op);
-int	gettoken(t_shell *sh, char **token);
+
+
+//void	free_exit(t_shell *shell);
 
 #endif

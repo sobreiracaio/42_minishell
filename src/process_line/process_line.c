@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/26 21:16:22 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:35:01 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,27 +353,6 @@ Haverão algumas exceções como:
 
 #include "../../include/minishell.h"
 
-// Função para alternar o status da citação e verificar se existem aspas não correspondidas
-static int inside_quotes(char *line, char *current_position)
-{
-    int quote = 0;
-
-    while (*line) 
-	{
-        if (*line == '"' || *line == '\'') 
-		{
-            if (quote == 0)
-                quote = *line; // Se a quote não existir é definida aqui como existente 
-            else if (quote == *line)
-                quote = 0; // Se a quote existir é definida aqui 
-        }
-		if (&line == &current_position)
-			break;
-        line++;
-    }
-    return (quote); // Retorna o status de citação atual se nenhuma das condições acima for verdadeira
-}
-
 static void	insert_nullchar(t_shell *shell)
 {
     char	*tmp;
@@ -401,11 +380,32 @@ static void	insert_nullchar(t_shell *shell)
     shell->line_len = ft_strlen(shell->line);
 }
 
+// Função para alternar o status da citação e verificar se existem aspas não correspondidas
+int inside_quotes(char *line, char *current_position)
+{
+    int quote = 0;
+
+    while (*line) 
+	{
+        if (*line == '"' || *line == '\'') 
+		{
+            if (quote == 0)
+                quote = *line; // Se a quote não existir é definida aqui como existente 
+            else if (quote == *line)
+                quote = 0; // Se a quote existir é definida aqui 
+        }
+		if (&line == &current_position)
+			break;
+        line++;
+    }
+    return (quote); // Retorna o status de citação atual se nenhuma das condições acima for verdadeira
+}
+
 // Função para verificar se existem pipes não correspondidos
 static int check_pipes(t_shell *shell) 
 {
     if (*shell->line == '|')
-		return (print_error_syntax(shell->line, 2));	
+		return (print_error_syntax(shell, shell->line, 2));	
 	if (shell->line[strlen(shell->line) - 1] == '|') 
         return (print_error(shell, "Open | not supported", NULL, 2));
 	return (0);
@@ -418,8 +418,6 @@ static int check_syntax_errors(t_shell *shell)
 		return (0);
 	return (1);
 }
-
-
 
 int	process_line(t_shell *shell)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 18:52:19 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/26 18:21:57 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:20:31 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,17 +107,17 @@ void	ms_cd(t_shell *shell, t_exec *cmd)
 	if (!cmd->argv[1] || !*cmd->argv[1])   // check if the second argument is valid
 	{
 		if (!ms_chdir(shell, env_get("HOME", shell)))   //if chdir is not successful on obtaining the HOME name in shell envp ...
-			print_error(shell, "cd", "HOME not set"); // ... print error is called
+			print_error(shell, "cd", "HOME not set", 1); // ... print error is called
 	}
 	else //if argument is valid
 	{
 		if (cmd->argv[2])  //check if there is a third argument 
-			print_error(shell, "cd", "too many arguments"); // if there is third argument print error is called, cd does not support arguments
+			print_error(shell, "cd", "too many arguments", 1); // if there is third argument print error is called, cd does not support arguments
 		else if (ft_strcmp(cmd->argv[1], "-") == 0)  // verifies if string compare found a "-" in the second argument. "cd -" gets the last cwd which is recorded on OLDPWD
 		{
 			if (!ms_chdir(shell, env_get("OLDPWD", shell))) // call function to change directory,if an old pwd is recorded on the envp the directory is going to be changed to it
 			{
-				print_error(shell, "cd", "OLDPWD not set"); // if its not recorded prints and error and return
+				print_error(shell, "cd", "OLDPWD not set", 1); // if its not recorded prints and error and return
 				return ;
 			}
 			hyphen_cd_print(shell, env_get("PWD", shell)); // calls function that verifies if there is an "~" in the second argument, if its true sets HOME as cwd.
@@ -125,7 +125,7 @@ void	ms_cd(t_shell *shell, t_exec *cmd)
 		else if (cmd->argv[1][0]
 			&& !ms_chdir(shell, cmd->argv[1]) && !cdpath(shell, cmd->argv[1]))
 			print_error(shell, "cd: no such file or directory",
-				cmd->argv[1]);
+				cmd->argv[1], 1);
 	}
 	if (shell->status == CONTINUE)
 		g_exit = 0;

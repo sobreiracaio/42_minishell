@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:43:25 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 11:20:56 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:16:09 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ int	parse_cmd(t_shell *shell)
     shell->cmd = parsepipe(shell);
     peek(shell, "");
 	if (shell->ps != shell->es && shell->status != 2) // Se ps for diferente de es e o status for diferente de 2
-		return (!print_error_syntax(shell->ps, 2));
+		return (!print_error_syntax(shell, shell->ps, 2));
 	return (shell->status == CONTINUE); // Não retorna o comando, retorna se o if do parser no main é verdadeiro ou não. se for verdadeiro retorna diferente de zero (pode ser 1, 2, etc).
 }

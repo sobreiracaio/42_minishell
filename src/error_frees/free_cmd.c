@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 23:32:58 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/26 19:59:29 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:34:09 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void free_exec(t_exec*exec)
+{
+	if(!exec)
+		return;
+	if (exec->argv[0])
+		free(exec->argv[0]);
+	free (exec);
+	exec = NULL;
+}
 static void	free_redir(t_redir *redir)
 {
 	if (!redir)

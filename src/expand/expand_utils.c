@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:40:13 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/24 10:46:57 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 13:19:37 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	expand_line(char *space, int i, int j, char **line)
 
 int	expand_free(char *key, int i, int j, char **line)
 {
-	expand(key, i, j, line);
+	expand_line(key, i, j, line);
 	free(key);
 	return (1);
 }

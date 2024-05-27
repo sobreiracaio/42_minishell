@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:23:51 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/26 18:00:06 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 13:40:36 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	expand_argv(t_shell *shell, char **argv)
 	expanded = (ft_strchr(argv[0], '$'));  // Check if is there any envp to be expanded if there is an ocurrence of $
 	expand_arg(shell, &argv[0]); //Expands the envp in the first argument
 	len = ft_strlen(argv[0]);  //Gets the new lenght of the expanded arg
-	trim_arg(argv[0]); //Trims the excess of spaces on the beggining and end of the string
+	trim_arg(shell, argv[0]); //Trims the excess of spaces on the beggining and end of the string
 	trim_quotes(argv[0], &len); //Trims quotes and updates length;
 	i = 1;
 	tmp = argv[0];

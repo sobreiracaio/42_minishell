@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 12:21:23 by achien-k          #+#    #+#             */
-/*   Updated: 2024/05/26 18:30:12 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:25:26 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void	ms_exit(t_shell *shell, t_exec *cmd)
 
 	err = NULL;
 	if (cmd->argv[2])
-		print_error(shell, cmd->argv[0], "too many arguments");
+		print_error(shell, cmd->argv[0], "too many arguments", 2);
 	if (cmd->argv[1])
 	{
 		if (!islonglong(cmd->argv[1]) && ft_strcmp(cmd->argv[1], "0"))
 		{
 			err = ft_strjoin(cmd->argv[1], ": numeric argument required");
-			print_error(shell, cmd->argv[0], err);
+			print_error(shell, cmd->argv[0], err, 2);
 			free(err);
 		}
 		else

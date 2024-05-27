@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:48:55 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 11:49:00 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:15:38 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 		if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
 		{
 			if (type != '<' || (type == '<' && ft_strcmp(token, ">"))) // Se o tipo for diferente de < ou se o tipo for < e o token for diferente de ">".
-				return (print_error_syntax(token, 2), cmd);
+				return (print_error_syntax(shell, token, 2), cmd);
 			else
 				if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
-					return (print_error_syntax(token, 2), cmd);
+					return (print_error_syntax(shell, token, 2), cmd);
 		}
 		if (type == '<')
 			cmd = redir_cmd(cmd, token, O_RDONLY, 0);
@@ -48,8 +48,6 @@ static t_cmd	*parseexec(t_shell *shell)
 	char	*token;
 	int		type;
 
-	/* if (peek(shell, "(", 1) || peek(shell, "(", 2))
-		return (parseblock(shell)); */
 	ret = exec_cmd();
 	cmd = (t_exec *)ret;
 	ret = parseredir(ret, shell);
@@ -59,17 +57,7 @@ static t_cmd	*parseexec(t_shell *shell)
 		if (!type)
 			break ;
 		if (type != 'a' && shell->status == CONTINUE)
-			return (print_error_syntax(token, 2), ret);
-		//cmd -> argv(argc = q;
-		//cmd -> eargv(argc = eq;
-		// argc++;
-		// if argc >= MAXARGS
-		//	panic("too many args");
-		// ret = parseredir(ret, ps, es;
-		// }
-		// cmd->argv(argc) = 0;
-		// cmd->eargv(argc) = 0;
-		// return ret;
+			return (print_error_syntax(shell, token, 2), ret);
 		if (cmd->argv[0])
 			cmd->argv[0] = ft_strjoin_free_s1(cmd->argv[0], " ");
 		cmd->argv[0] = ft_strjoin_free_s1(cmd->argv[0], token);
@@ -83,7 +71,7 @@ t_cmd	*parsepipe(t_shell *shell)
 	t_cmd	*cmd;
 
 	if (peek(shell, "|") && shell->status == CONTINUE)
-		return (print_error_syntax(shell->ps, 2), NULL);
+		return (print_error_syntax(shell, shell->ps, 2), NULL);
 	cmd = parseexec(shell);
 	if (cmd && peek(shell, "|"))
 	{
