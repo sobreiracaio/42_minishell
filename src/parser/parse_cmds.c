@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:48:55 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/26 23:26:37 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:49:00 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,12 @@
 static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 {
 	int		type;
-	//char	*q; *eq
 	char	*token; // Token é o argumento. O argumento é o que vem depois do operador de redirecionamento "<" ou ">".
 
 	while (peek(shell, "<>")) // Verifica se o próximo token é "<" ou ">".
 	{
 		type = gettoken(shell, NULL); // Obtém o tipo do token. se é "<" ou ">".
-		/* if (gettoken(ps, es, &q, &eq))
-		{
-			panic ("missing file for redirection")
-		} */
+	
 		if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
 		{
 			if (type != '<' || (type == '<' && ft_strcmp(token, ">"))) // Se o tipo for diferente de < ou se o tipo for < e o token for diferente de ">".
@@ -39,7 +35,6 @@ static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 			cmd = redir_cmd(cmd, token, O_WRONLY | O_CREAT | O_TRUNC, 1);
 		else if (type == APPEND)
 			cmd = redir_cmd(cmd, token, O_WRONLY | O_CREAT | O_APPEND, 1);
-		//velho n tem heredoc nem append?
 		else if (type == HERE_DOC)
 			cmd = here_cmd(cmd, token);
 	}
@@ -83,7 +78,7 @@ static t_cmd	*parseexec(t_shell *shell)
 	return (ret);
 }
 
-static t_cmd	*parsepipe(t_shell *shell)
+t_cmd	*parsepipe(t_shell *shell)
 {
 	t_cmd	*cmd;
 

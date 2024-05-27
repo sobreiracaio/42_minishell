@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_constructors.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:32:08 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/22 10:50:04 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 11:49:27 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd)
 	redir->file = ft_strdup(file);
 	redir->mode = mode;
 	redir->fd = fd;
-	if (cmd->type == EXEC || cmd->type == BLOCK)
+	if (cmd->type == EXEC)
 		redir->cmd = cmd;
 	else
 	{
 		tmp = cmd;
-		while (tmp->type != EXEC && tmp->type != BLOCK)
+		while (tmp->type != EXEC)
 		{
 			tmp2 = tmp;
 			tmp = ((t_redir *)tmp)->cmd;

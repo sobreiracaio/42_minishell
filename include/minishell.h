@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/26 22:18:09 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:49:05 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,6 @@ void	ms_unset(t_shell *shell, t_exec *cmd);
 void	ms_env(t_shell *shell, t_exec *cmd);
 void	ms_exit(t_shell *shell, t_exec *cmd);
 
-void    envp_to_list(char **envp, t_shell *shell);
-t_env   *env_add(t_shell *shell, char *key, char *value, int visible);
-void    envp_sort(t_shell *shell);
-void    envp_update(t_shell *shell);
-//void    envp_destroy(t_env *env);
 
 int     process_line(t_shell *shell);
 void	free_exit(t_shell *shell);
@@ -159,9 +154,9 @@ t_env	*envp_to_sort_list(t_shell *shell);
 char	*env_get_value(char *key, t_shell *shell);
 
 void 	ft_envlstdelone(t_env *lst, void (*del)(void*));
-int		expand(char *key, int i, int j, char **line);
+int		expand_line(char *key, int i, int j, char **line);
 int		print_error_syntax(char *msg, int exit);
-int	print_error(t_shell *shell, char *msg, char *msg2, int exit);
+int	    print_error(t_shell *shell, char *msg, char *msg2, int exit);
 bool	env_mod(t_shell *shell, char *target, char *new_value);
 void	env_export(t_shell *shell, char *key, char *value, int visible);
 void	envp_print(t_shell *shell);
@@ -170,14 +165,23 @@ void	run_cmd(t_shell *shell, t_cmd *cmd);
 void	run_exec(t_shell *shell, t_exec *cmd);
 void	run_redir(t_shell *shell, t_redir *cmd);
 void	run_heredoc(t_shell *shell, t_here *here);
+t_cmd	*here_cmd(t_cmd *cmd, char *eof);
 
 void	expand_arg(t_shell *shell, char **arg);
 int	expand_line(char *space, int i, int j, char **line);
 void	run_pipe(t_shell *shell, t_pipe *cmd);
 void	free_cmd(t_cmd *cmd);
-t_cmd	*parse_cmd(t_shell *shell);
+
+
+int	parse_cmd(t_shell *shell);
+t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd);
+t_cmd	*pipe_cmd(t_cmd *left, t_cmd *right);
+t_cmd	*exec_cmd(void);
 void trim_arg(char *arg);
 void	trim_quotes(char *arg, int *len);
 
 t_cmd	*parsepipe(t_shell *shell);
+int	peek(t_shell *shell, char *op);
+int	gettoken(t_shell *sh, char **token);
+
 #endif

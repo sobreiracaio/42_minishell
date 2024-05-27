@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:43:25 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/26 22:18:58 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:20:56 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	peek(t_shell *shell, char *op)
 	return (shell->ps && ft_strchr(op, *shell->ps)); // Retorna 1 se encontrar um caractere em op, 0 caso contrário
 }
 
-t_cmd	*parse_cmd(t_shell *shell)
+int	parse_cmd(t_shell *shell)
 {
 	shell->ps = shell->line;
     shell->es = shell->line + shell->line_len;

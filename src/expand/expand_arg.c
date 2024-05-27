@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_arg.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:48:05 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/26 11:29:11 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 11:50:51 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,11 @@ void	expand_arg(t_shell *shell, char **arg)
 static int	point_to_exp_tilde(t_shell *sh, int point, char *tmp, char **line)
 {
 	if (!tmp[1] || ft_strchr(NOT_EXP, tmp[1]))
-		return (expand(env_get("HOME", sh), point, point + 1, line));
+		return (expand_line(env_get("HOME", sh), point, point + 1, line));
 	else if (tmp[1] == '+' && (!tmp[2] || ft_strchr(NOT_EXP, tmp[2])))
-		return (expand(env_get("PWD", sh), point, point + 2, line));
+		return (expand_line(env_get("PWD", sh), point, point + 2, line));
 	else if (tmp[1] == '-' && (!tmp[2] || ft_strchr(NOT_EXP, tmp[2])))
-		return (expand(env_get("OLDPWD", sh), point, point + 2, line));
+		return (expand_line(env_get("OLDPWD", sh), point, point + 2, line));
 	return (0);
 }
 
