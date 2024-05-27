@@ -14,20 +14,22 @@
 
 static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 {
-	int		type;
-	char	*token; // Token é o argumento. O argumento é o que vem depois do operador de redirecionamento "<" ou ">".
+	int	type;
 
+	char *token;
+		// Token é o argumento. O argumento é o que vem depois do operador de redirecionamento "<" ou ">".
 	while (peek(shell, "<>")) // Verifica se o próximo token é "<" ou ">".
 	{
 		type = gettoken(shell, NULL); // Obtém o tipo do token. se é "<" ou ">".
-	
-		if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
+		if (gettoken(shell, &token) != 'a')
+			// Se o próximo token não for argumento.
 		{
-			if (type != '<' || (type == '<' && ft_strcmp(token, ">"))) // Se o tipo for diferente de < ou se o tipo for < e o token for diferente de ">".
+			if (type != '<' || (type == '<' && ft_strcmp(token, ">")))
+				// Se o tipo for diferente de < ou se o tipo for < e o token for diferente de ">".
 				return (print_error_syntax(shell, token, 2), cmd);
-			else
-				if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
-					return (print_error_syntax(shell, token, 2), cmd);
+			else if (gettoken(shell, &token) != 'a')
+				// Se o próximo token não for argumento.
+				return (print_error_syntax(shell, token, 2), cmd);
 		}
 		if (type == '<')
 			cmd = redir_cmd(cmd, token, O_RDONLY, 0);
@@ -68,7 +70,7 @@ static t_cmd	*parseexec(t_shell *shell)
 
 t_cmd	*parsepipe(t_shell *shell)
 {
-	t_cmd	*cmd;
+	t_cmd *cmd;
 
 	if (peek(shell, "|") && shell->status == CONTINUE)
 		return (print_error_syntax(shell, shell->ps, 2), NULL);

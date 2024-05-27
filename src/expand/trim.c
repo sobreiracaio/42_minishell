@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* 
+/*
 // Código do Balsa
 
 #include "../../include/minishell.h"
 
 void	trim_arg(char *arg)
 {
-	int		squote;
-	int		dquote;
+	int	squote;
+	int	dquote;
 
 	dquote = 0;
 	squote = 0;
@@ -63,14 +63,14 @@ void	trim_quotes(char *arg, int *len)
 */
 #include "../../include/minishell.h"
 
-void trim_arg(t_shell *shell, char *arg)
+void	trim_arg(t_shell *shell, char *arg)
 {
-    while (*arg)
-    {
-        if (ft_strchr(SPACES, *arg) && !inside_quotes(shell->line, arg))
-            *arg = '\0';
-        arg++;
-    }
+	while (*arg)
+	{
+		if (ft_strchr(SPACES, *arg) && !inside_quotes(shell->line, arg))
+			*arg = '\0';
+		arg++;
+	}
 }
 
 void	trim_quotes(char *arg, int *len)
@@ -98,5 +98,3 @@ void	trim_quotes(char *arg, int *len)
 			i++;
 	}
 }
-
-

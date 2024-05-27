@@ -59,10 +59,9 @@ static char	*get_prompt(t_shell *shell)
 		return (shell->line);
 }
 
-static int to_run( t_shell *shell)
+static int	to_run(t_shell *shell)
 {
-	
-	//sig_handler(SIGRESTORE);
+	// sig_handler(SIGRESTORE);
 	shell->status = STOP;
 	shell->exec_cmd = true;
 	shell->line = get_prompt(shell);
@@ -70,7 +69,7 @@ static int to_run( t_shell *shell)
 	{
 		if (parse_cmd(shell))
 		{
-			//sig_handler(SIGPIPE);
+			// sig_handler(SIGPIPE);
 			run_cmd(shell, shell->cmd);
 		}
 		free_cmd(shell->cmd);
@@ -93,6 +92,7 @@ static int	init_shell_variables(t_shell *shell, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
+
 	// g_exit = 0;
 	(void)argv;
 	if (!init_shell_variables(&shell, envp))
@@ -104,15 +104,16 @@ int	main(int argc, char **argv, char **envp)
 	}
 	else
 		welcome_screen();
-		
-	while (to_run(&shell));
+	while (to_run(&shell))
+		;
 	clear_history();
-	ft_envlstclear (shell.env_list, free);
-	if (shell.envp_char) // If the shell's environment copy exists...
-		ft_free_array(shell.envp_char);  // Free the memory allocated for it.
-	if (isatty(STDIN_FILENO)) // If the shell is connected to a terminal... is running in interactive mode
-		ft_putendl_fd("exit", 2); // Print "exit" to the standard error output.
+	ft_envlstclear(shell.env_list, free);
+	if (shell.envp_char)
+		// If the shell's environment copy exists...
+		ft_free_array(shell.envp_char); // Free the memory allocated for it.
+	if (isatty(STDIN_FILENO))
+		// If the shell is connected to a terminal... is running in interactive mode
+		ft_putendl_fd("exit", 2);
+	// Print "exit" to the standard error output.
 	return (g_exit);
 }
-
-

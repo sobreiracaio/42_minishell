@@ -12,13 +12,13 @@
 
 #include "../../include/minishell.h"
 
-void free_exec(t_exec*exec)
+void	free_exec(t_exec *exec)
 {
-	if(!exec)
-		return;
+	if (!exec)
+		return ;
 	if (exec->argv[0])
 		free(exec->argv[0]);
-	free (exec);
+	free(exec);
 	exec = NULL;
 }
 static void	free_redir(t_redir *redir)
