@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:48:55 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/06 12:49:11 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/26 23:26:37 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,23 @@
 static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 {
 	int		type;
-	char	*token;
+	//char	*q; *eq
+	char	*token; // Token é o argumento. O argumento é o que vem depois do operador de redirecionamento "<" ou ">".
 
-	while (peek(shell, "<>", 1) || peek(shell, "<>", 2))
+	while (peek(shell, "<>")) // Verifica se o próximo token é "<" ou ">".
 	{
-		type = gettoken(shell, NULL);
-		if (gettoken(shell, &token) != 'a')
+		type = gettoken(shell, NULL); // Obtém o tipo do token. se é "<" ou ">".
+		/* if (gettoken(ps, es, &q, &eq))
 		{
-			if (type != '<' || (type == '<' && ft_strcmp(token, ">")))
-				return (print_error_syntax(shell, token, 2), cmd);
+			panic ("missing file for redirection")
+		} */
+		if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
+		{
+			if (type != '<' || (type == '<' && ft_strcmp(token, ">"))) // Se o tipo for diferente de < ou se o tipo for < e o token for diferente de ">".
+				return (print_error_syntax(token, 2), cmd);
 			else
-				if (gettoken(shell, &token) != 'a')
-					return (print_error_syntax(shell, token, 2), cmd);
+				if (gettoken(shell, &token) != 'a') // Se o próximo token não for argumento.
+					return (print_error_syntax(token, 2), cmd);
 		}
 		if (type == '<')
 			cmd = redir_cmd(cmd, token, O_RDONLY, 0);
@@ -34,33 +39,11 @@ static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 			cmd = redir_cmd(cmd, token, O_WRONLY | O_CREAT | O_TRUNC, 1);
 		else if (type == APPEND)
 			cmd = redir_cmd(cmd, token, O_WRONLY | O_CREAT | O_APPEND, 1);
+		//velho n tem heredoc nem append?
 		else if (type == HERE_DOC)
 			cmd = here_cmd(cmd, token);
 	}
 	return (cmd);
-}
-
-static t_cmd	*parseblock(t_shell *shell)
-{
-	t_cmd	*cmd;
-
-	if (!peek(shell, "(", 1) && !peek(shell, "(", 2))
-	{
-		print_error(shell, "parsblock", NULL, 2);
-		return (NULL);
-	}
-	gettoken(shell, NULL);
-	cmd = block_cmd(parseline(shell));
-	if (!cmd)
-		return (NULL);
-	if (!peek(shell, ")", 1) && !peek(shell, ")", 2)
-		&& shell->status == CONTINUE)
-	{
-		print_error(shell, "open parenthesis not suported", NULL, 2);
-		return (cmd);
-	}
-	gettoken(shell, NULL);
-	return (parseredir(cmd, shell));
 }
 
 static t_cmd	*parseexec(t_shell *shell)
@@ -70,18 +53,28 @@ static t_cmd	*parseexec(t_shell *shell)
 	char	*token;
 	int		type;
 
-	if (peek(shell, "(", 1) || peek(shell, "(", 2))
-		return (parseblock(shell));
+	/* if (peek(shell, "(", 1) || peek(shell, "(", 2))
+		return (parseblock(shell)); */
 	ret = exec_cmd();
 	cmd = (t_exec *)ret;
 	ret = parseredir(ret, shell);
-	while (!peek(shell, "|&)", 1) && !peek(shell, "|&)", 2))
+	while (!peek(shell, "|"))
 	{
 		type = gettoken(shell, &token);
 		if (!type)
 			break ;
 		if (type != 'a' && shell->status == CONTINUE)
-			return (print_error_syntax(shell, token, 2), ret);
+			return (print_error_syntax(token, 2), ret);
+		//cmd -> argv(argc = q;
+		//cmd -> eargv(argc = eq;
+		// argc++;
+		// if argc >= MAXARGS
+		//	panic("too many args");
+		// ret = parseredir(ret, ps, es;
+		// }
+		// cmd->argv(argc) = 0;
+		// cmd->eargv(argc) = 0;
+		// return ret;
 		if (cmd->argv[0])
 			cmd->argv[0] = ft_strjoin_free_s1(cmd->argv[0], " ");
 		cmd->argv[0] = ft_strjoin_free_s1(cmd->argv[0], token);
@@ -90,18 +83,17 @@ static t_cmd	*parseexec(t_shell *shell)
 	return (ret);
 }
 
-static t_cmd	*parsepipeline(t_shell *shell)
+static t_cmd	*parsepipe(t_shell *shell)
 {
 	t_cmd	*cmd;
 
-	if ((peek(shell, "|&", 1) || peek(shell, "|&", 2))
-		&& shell->status == CONTINUE)
-		return (print_error_syntax(shell, shell->ps, 2), NULL);
+	if (peek(shell, "|") && shell->status == CONTINUE)
+		return (print_error_syntax(shell->ps, 2), NULL);
 	cmd = parseexec(shell);
-	if (cmd && peek(shell, "|", 1))
+	if (cmd && peek(shell, "|"))
 	{
 		gettoken(shell, NULL);
-		cmd = pipe_cmd(cmd, parsepipeline(shell));
+		cmd = pipe_cmd(cmd, parsepipe(shell));
 	}
 	return (cmd);
 }

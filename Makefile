@@ -6,32 +6,40 @@
 #    By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/05/08 00:45:07 by crocha-s         ###   ########.fr        #
+#    Updated: 2024/05/26 20:00:04 by crocha-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 NAME = minishell
 
 SRC = src/main.c \
-	  src/check_args.c \
-	  src/envp/envp.c \
-	  src/envp/envp_utils.c \
-	  src/error_frees/error_free.c \
+	  src/run_cmd/checks.c \
+	  src/run_cmd/run_cmd.c \
+	  src/run_cmd/run_redir.c \
+	  src/process_line/process_line.c \
+	  src/parser/parser.c \
+	  src/parser/parse_cmds.c \
+	  src/parser/node_constructors.c \
+	  src/expand/expand_arg.c \
 	  src/expand/expand_utils.c \
+	  src/expand/trim.c \
+	  src/error_free/error_free.c \
+	  src/envp/envp1_create.c \
+	  src/envp/envp2_add_rm.c \
+	  src/envp/envp3_clear_modify.c \
+	  src/envp/envp4_sortlist_export_get_print.c \
+	  src/run_builtins/unset.c \
+	  src/error_frees/free_cmd.c \
 	  
-		
-
-
 OBJS = ${SRC:.c=.o}
 
-CC = clang
+CC = cc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 INCLUDE = -I include
 MAKE = make -C
 LIBFT_PATH = libft
-LFLAGS = -L ./Libft_obj -lft -lreadline
+LFLAGS = -L ${LIBFT_PATH} -lft -lreadline
 
 .c.o:
 		${CC} ${CFLAGS} ${INCLUDE} -c $< -o ${<:.c=.o}
@@ -51,23 +59,5 @@ fclean: clean
 		${RM} ${NAME}
 
 re: fclean all
-
-leaks: readline.supp
-	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --log-file=output.log ./minishell
-
-readline.supp:
-	echo "{" > readline.supp
-	echo "    leak readline" >> readline.supp
-	echo "    Memcheck:Leak" >> readline.supp
-	echo "    ..." >> readline.supp
-	echo "    fun:readline" >> readline.supp
-	echo "}" >> readline.supp
-	echo "{" >> readline.supp
-	echo "    leak add_history" >> readline.supp
-	echo "    Memcheck:Leak" >> readline.supp
-	echo "    ..." >> readline.supp
-	echo "    fun:add_history" >> readline.supp
-	echo "}" >> readline.supp
-
 
 .PHONY: all clean fclean re
