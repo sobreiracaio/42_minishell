@@ -6,21 +6,37 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:32:04 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/26 17:49:56 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:43:31 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void	wait_children(t_shell *shell)
+{
+	if (waitpid(shell->pid, &g_exit, 0) != -1)
+	{
+		if (WIFEXITED(g_exit))
+			g_exit = WEXITSTATUS(g_exit);
+		else if (WIFSIGNALED(g_exit))
+			g_exit = WTERMSIG(g_exit) + 128;
+	}
+	while (wait(0) != -1)
+		;
+	if (g_exit == 130)
+		shell->status = RESTORE;
+}
+
+
 static void	close_fds_and_sig_handler(int fd[2], int sig)
 {
 	if (sig)
-		sig_handler(sig);
+		//sig_handler(sig);
 	check(close(fd[0]), "close error", 127);
 	check(close(fd[1]), "close error", 127);
 }
 
-static void	run_pipe(t_shell *shell, t_pipe *cmd)
+void	run_pipe(t_shell *shell, t_pipe *cmd)
 {
 	int		fd[2];
 

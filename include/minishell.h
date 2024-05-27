@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/27 15:11:47 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:43:46 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ void	run_exec(t_shell *shell, t_exec *cmd);
 void	run_redir(t_shell *shell, t_redir *cmd);
 void	run_pipe(t_shell *shell, t_pipe *cmd);
 void	check(int result, char *msg, int exit);
+int	check_fork(void);
 t_cmd	*here_cmd(t_cmd *cmd, char *eof);
 void	run_heredoc(t_shell *shell, t_here *here);
 
@@ -196,7 +197,7 @@ void	ms_unset(t_shell *shell, t_exec *cmd);
 void	ms_env(t_shell *shell, t_exec *cmd);
 void	ms_exit(t_shell *shell, t_exec *cmd);
 
-
+void	wait_children(t_shell *shell);
 
 
 

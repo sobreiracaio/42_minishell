@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp1_create.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/22 10:42:52 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 16:49:51 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,7 @@ void convert_envp_to_linked_lists(char **envp, t_shell *shell)
 		i++;
 	}
 	shell->env_list_sorted = envp_to_sort_list(shell); // Cria a linked list por ordem alfabética.
+	
 }
 
 void convert_envp(char **envp, t_shell *shell)

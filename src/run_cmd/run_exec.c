@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:23:51 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/27 13:40:36 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:52:46 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	check_execve_errors(t_shell *shell, char *path)
 		ft_putendl_fd(": Permission denied", STDERR_FILENO);
 	else if (!access(path, F_OK) && !access(path, X_OK) && path[0] != '.')
 		ft_putendl_fd(": Is a directory", STDERR_FILENO);
-	else if (ft_strchr(path, '/') || !env_get("PATH", shell))
+	else if (ft_strchr(path, '/') || !env_get_value("PATH", shell))
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 	else
 		ft_putendl_fd(": command not found", STDERR_FILENO);
@@ -40,9 +40,9 @@ static char	*get_path(t_shell *shell, char *cmd)
 	i = 0;
 	path = NULL;
 	path2 = NULL;
-	if (ft_strchr("/.", cmd[0]) || !env_get("PATH", shell) || !ft_strcmp(cmd, ""))
+	if (ft_strchr("/.", cmd[0]) || !env_get_value("PATH", shell) || !ft_strcmp(cmd, ""))
 		return (ft_strdup(cmd));
-	paths = ft_split(env_get("PATH", shell), ':');
+	paths = ft_split(env_get_value("PATH", shell), ':');
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], "/");
@@ -68,7 +68,8 @@ static void	expand_argv(t_shell *shell, char **argv)
 
 	if (!argv[0])
 		return ;
-	expanded = (ft_strchr(argv[0], '$'));  // Check if is there any envp to be expanded if there is an ocurrence of $
+	if(ft_strchr(argv[0], '$'))
+		expanded = 1;  // Check if is there any envp to be expanded if there is an ocurrence of $
 	expand_arg(shell, &argv[0]); //Expands the envp in the first argument
 	len = ft_strlen(argv[0]);  //Gets the new lenght of the expanded arg
 	trim_arg(shell, argv[0]); //Trims the excess of spaces on the beggining and end of the string
@@ -88,6 +89,15 @@ static void	expand_argv(t_shell *shell, char **argv)
 	}
 }
 
+static void	check_exit_status(void)
+{
+	if (g_exit == 11 || g_exit == 139)
+		ft_putendl_fd("Segmentation fault (core dumped)", STDERR_FILENO);
+	else if (g_exit == 8 || g_exit == 136)
+		ft_putendl_fd("Floating point exception (core dumped)", STDERR_FILENO);
+}
+
+
 void	run_exec(t_shell *shell, t_exec *cmd)
 {
 	pid_t	pid;
@@ -98,7 +108,7 @@ void	run_exec(t_shell *shell, t_exec *cmd)
 		return (g_exit = 0, (void)0);
 	if (run_builtin(shell, cmd))  // Try to use argv as an command for a bultin command, if it succeeds the builtin command will be executed
 		return ;
-	sig_handler(SIGCHILD);
+	//sig_handler(SIGCHILD);
 	pid = check_fork();   // create a fork and check if its creation was successful
 	if (pid == 0) //if it is a child process
 	{
@@ -112,5 +122,5 @@ void	run_exec(t_shell *shell, t_exec *cmd)
 	else if (WIFSIGNALED(g_exit))
 		g_exit = 128 + WTERMSIG(g_exit);
 	check_exit_status();
-	sig_handler(SIGRESTORE);
+	//sig_handler(SIGRESTORE);
 }

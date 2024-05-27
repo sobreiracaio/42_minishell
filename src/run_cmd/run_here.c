@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:42:13 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/27 11:38:30 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:54:46 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	expand_heredoc(t_shell *shell, char **line)
 		if ((*line)[i] == '$' && (*line)[i + 1] == '?')
 		{
 			tmp = ft_itoa(g_exit);
-			expand(tmp, i, i + 2, line);
+			expand_line(tmp, i, i + 2, line);
 			free(tmp);
 		}
 		else if ((*line)[i] == '$' && ft_isalpha((*line)[i + 1]))
@@ -33,7 +33,7 @@ static void	expand_heredoc(t_shell *shell, char **line)
 			while (ft_isalnum((*line)[j]) || (*line)[j] == '_')
 				j++;
 			tmp = ft_substr(*line, i + 1, j - i - 1);
-			expand(env_get(tmp, shell), i, j, line);
+			expand_line(env_get_value(tmp, shell), i, j, line);
 			free(tmp);
 		}
 		i++;
@@ -80,7 +80,7 @@ void	run_heredoc(t_shell *shell, t_here *here)
 	pid = check_fork();
 	if (pid == 0)
 	{
-		sig_handler(SIGHEREDOC);
+		//sig_handler(SIGHEREDOC);
 		heredoc_reader(shell, here, 0);
 	}
 	waitpid(pid, &g_exit, 0);
