@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+         #
+#    By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/05/27 16:28:37 by crocha-s         ###   ########.fr        #
+#    Updated: 2024/05/28 12:32:42 by joaosilva        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ OBJS = ${SRC:.c=.o}
 
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 INCLUDE = -I include
 MAKE = make -C
 LIBFT_PATH = libft/
@@ -55,11 +55,11 @@ LFLAGS = -L ${LIBFT_PATH} -lft -lreadline
 .c.o:
 		${CC} ${CFLAGS} ${INCLUDE} -c $< -o ${<:.c=.o}
 
+all:	${NAME}
+
 $(NAME): ${OBJS}
 		${MAKE} ${LIBFT_PATH}
 		${CC} ${CFLAGS} ${INCLUDE} ${OBJS} ${LFLAGS} -o ${NAME}
-
-all:	${NAME}
 
 clean:
 		${MAKE} ${LIBFT_PATH} clean
@@ -70,5 +70,24 @@ fclean: clean
 		${RM} ${NAME}
 
 re: fclean all
+
+leaks: readline.supp
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --log-file=output.log ./minishell
+
+readline.supp:
+	echo "{" > readline.supp
+	echo "    leak readline" >> readline.supp
+	echo "    Memcheck:Leak" >> readline.supp
+	echo "    ..." >> readline.supp
+	echo "    fun:readline" >> readline.supp
+	echo "}" >> readline.supp
+	echo "{" >> readline.supp
+	echo "    leak add_history" >> readline.supp
+	echo "    Memcheck:Leak" >> readline.supp
+	echo "    ..." >> readline.supp
+	echo "    fun:add_history" >> readline.supp
+	echo "}" >> readline.supp
+
+.SILENT:
 
 .PHONY: all clean fclean re

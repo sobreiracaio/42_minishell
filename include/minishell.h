@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/27 15:43:46 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/28 10:40:13 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,8 @@
 # define EXEC 300
 # define REDIR 301
 # define PIPE 302
-//# define AND 303
-# define HERE_DOC 304
-/*# define OR_OP 305*/
-# define APPEND 306
-//# define BLOCK 307
+# define HERE_DOC 303
+# define APPEND 304
 
 # define MAXARGS 50
 
@@ -198,17 +195,5 @@ void	ms_env(t_shell *shell, t_exec *cmd);
 void	ms_exit(t_shell *shell, t_exec *cmd);
 
 void	wait_children(t_shell *shell);
-
-
-
-
-
-
-
-
-t_cmd	*parsepipe(t_shell *shell);
-
-
-//void	free_exit(t_shell *shell);
 
 #endif

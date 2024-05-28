@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/26 20:29:07 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:07:46 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,6 @@ static int	to_run(t_shell *shell)
 	free(shell->line);
 	return (shell->status);
 }
-void	welcome_screen(void)
-{
-	printf("\nMinishell 1.0\n");
-}
 
 static int	init_shell_variables(t_shell *shell, char **envp)
 {
@@ -103,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	}
 	else
-		welcome_screen();
+		printf("\nMinishell 1.0\n");
 	while (to_run(&shell))
 		;
 	clear_history();

@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 02:29:21 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 17:45:30 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/28 14:45:09 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,8 @@ t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 		return (NULL);
 	if (env_lstadd_back(&shell->env_list, new_node))
 		shell->envp_size++;
-	free(new_node);
-	envp_to_sort_list(shell);   
-		
-	convert_envp_to_char(shell); 
+	envp_to_sort_list(shell);
+	convert_envp_to_char(shell);
+	//free(new_node);
 	return (shell->env_list);
 }

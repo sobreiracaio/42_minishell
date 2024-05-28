@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 14:28:33 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:04:05 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/28 14:41:17 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,22 +171,23 @@ void	env_export(t_shell *shell, char *key, char *value, int visible)
 // Função para ordenar a lista ligada de variáveis de ambiente por ordem alfabética.
 t_env	*envp_to_sort_list(t_shell *shell)
 {
-	t_env	*lst_head_pointer;
-	char	*tmp_key;
+    t_env	*lst_head_pointer;
+    t_env	*tmp;
 
-	lst_head_pointer = shell->env_list;
-	tmp_key = NULL;
-	while (lst_head_pointer)
-	{
-		if (ft_strcmp(lst_head_pointer->key, lst_head_pointer->next->key) > 0)
-		{
-			tmp_key = lst_head_pointer->key;
-			lst_head_pointer->key = lst_head_pointer->next->key;
-			lst_head_pointer->next->key = tmp_key;
-			lst_head_pointer = shell->env_list;
-		}
-		else
-			lst_head_pointer = lst_head_pointer->next;
-	}
-	return (lst_head_pointer);
+	if (!shell->env_list)
+		return (NULL);
+    lst_head_pointer = shell->env_list;
+    while (lst_head_pointer && lst_head_pointer->next)
+    {
+        if (ft_strcmp(lst_head_pointer->key, lst_head_pointer->next->key) > 0)
+        {
+            tmp = lst_head_pointer;
+            lst_head_pointer = lst_head_pointer->next;
+            lst_head_pointer->next = tmp;
+            lst_head_pointer = shell->env_list;
+        }
+        else
+            lst_head_pointer = lst_head_pointer->next;
+    }
+    return (shell->env_list);
 }
