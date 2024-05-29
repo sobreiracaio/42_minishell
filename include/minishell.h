@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/29 01:09:49 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/30 00:49:19 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,5 +196,5 @@ void	ms_exit(t_shell *shell, t_exec *cmd);
 
 void	wait_children(t_shell *shell);
 void	signal_handler(int sig);
-
+void	close_fds_and_sig_handler(int fd[2], int sig);
 #endif
