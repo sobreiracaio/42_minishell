@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/28 11:07:46 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/29 00:25:38 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*get_prompt(t_shell *shell)
 
 static int	to_run(t_shell *shell)
 {
-	// sig_handler(SIGRESTORE);
+    signal_handler(SIGRESTORE);
 	shell->status = STOP;
 	shell->exec_cmd = true;
 	shell->line = get_prompt(shell);
@@ -69,7 +69,7 @@ static int	to_run(t_shell *shell)
 	{
 		if (parse_cmd(shell))
 		{
-			// sig_handler(SIGPIPE);
+			signal_handler(SIGPIPE);
 			run_cmd(shell, shell->cmd);
 		}
 		free_cmd(shell->cmd);
@@ -89,7 +89,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	// g_exit = 0;
 	(void)argv;
 	if (!init_shell_variables(&shell, envp))
 		return (0);
