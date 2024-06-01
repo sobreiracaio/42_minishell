@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:36:24 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/12 17:23:37 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/01 23:23:10 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void ms_echo(t_exec *cmd)
     }
      if (!flag)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-    //g_exit = 0;
+    g_exit = 0;
     
 }
 
