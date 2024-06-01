@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/01 20:09:53 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:25:20 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	convert_envp_to_char(t_shell *shell)
 		if (tmp->visible)
 		{
 			buffer_size = ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2;
-			buffer = (char *)malloc(buffer_size);
+			buffer = (char *)malloc(buffer_size * sizeof(char));
 			if (buffer == NULL)
 				return ;
 			ft_strlcpy(buffer, tmp->key, buffer_size);

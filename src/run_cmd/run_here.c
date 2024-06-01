@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:42:13 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/27 15:54:46 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/01 20:55:48 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	run_heredoc(t_shell *shell, t_here *here)
 	pid = check_fork();
 	if (pid == 0)
 	{
-		//sig_handler(SIGHEREDOC);
+		signal_handler(SIGHEREDOC);
 		heredoc_reader(shell, here, 0);
 	}
 	waitpid(pid, &g_exit, 0);

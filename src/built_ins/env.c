@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 09:56:55 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/27 15:57:28 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:51:33 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ms_env(t_shell *shell, t_exec *cmd)
 {
-	if (cmd->argv[1])
+	if (cmd->argv[2])
 		print_error(shell, "env", "too many arguments", 2);
 	else
 	{
