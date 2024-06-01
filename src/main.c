@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/29 00:25:38 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/01 20:18:30 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	to_run(t_shell *shell)
 static int	init_shell_variables(t_shell *shell, char **envp)
 {
 	*shell = (t_shell){0};
-	convert_envp(envp, shell);
+	convert_envp_to_linked_lists(envp, shell);
 	return (1);
 }
 
@@ -102,7 +102,7 @@ int	main(int argc, char **argv, char **envp)
 	while (to_run(&shell))
 		;
 	clear_history();
-	ft_envlstclear(shell.env_list, free);
+	ft_envlstclear(shell.env_list_unsorted, free);
 	if (shell.envp_char)
 		// If the shell's environment copy exists...
 		ft_free_array(shell.envp_char); // Free the memory allocated for it.

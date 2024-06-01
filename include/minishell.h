@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/30 00:49:19 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/01 20:17:59 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_shell
     char    *ps;
     char    *es;
     int         line_len;
-    t_env   *env_list;
+    t_env   *env_list_unsorted;
 	t_env   *env_list_sorted;
     t_cmd   *cmd;
     int     status;
@@ -132,7 +132,7 @@ int     process_line(t_shell *shell);
 int     inside_quotes(char *line, char *current_position);
 
 //envp1 file - create
-void	convert_envp(char **envp, t_shell *shell);
+void	convert_envp_to_linked_lists(char **envp, t_shell *shell);
 void 	convert_envp_to_char(t_shell *shell);
 
 //envp2 file - add/rm
@@ -145,7 +145,7 @@ bool	env_mod(t_shell *shell, char *target, char *new_value);
 void	ft_envlstclear(t_env *lst, void (*del)(void*));
 
 //envp4 file - sort/export/get/print
-t_env	*envp_to_sort_list(t_shell *shell);
+t_env   *env_sorted_list(t_shell *shell);
 void	env_export(t_shell *shell, char *key, char *value, int visible);
 char	*env_get_value(char *key, t_shell *shell);
 void	envp_print(t_shell *shell);
@@ -196,5 +196,5 @@ void	ms_exit(t_shell *shell, t_exec *cmd);
 
 void	wait_children(t_shell *shell);
 void	signal_handler(int sig);
-void	close_fds_and_sig_handler(int fd[2], int sig);
+//void	close_fds_and_sig_handler(int fd[2], int sig);
 #endif

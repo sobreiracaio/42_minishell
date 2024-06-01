@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:07:51 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/01 20:44:51 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,13 +366,13 @@ Haverão algumas exceções como:
 static void	insert_nullchar(t_shell *shell)
 {
 	char	*tmp;
-	int		quote;
+	//int		quote;
 
-	quote = 0;
+	//quote = 0;
 	tmp = shell->line;
 	while (*(++tmp))
 	{
-		if (ft_strchr("OPERATORS", *tmp) && !inside_quotes(shell->line, tmp))
+		if (ft_strchr(OPERATORS, *tmp) && !inside_quotes(shell->line, tmp))
 			// Se o caractere for um operador e não estiver dentro de aspas
 		{
 			if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1)))
@@ -386,7 +386,7 @@ static void	insert_nullchar(t_shell *shell)
 				if (expand_line(" ", tmp - shell->line + 1, tmp - shell->line
 						+ 1, &shell->line))
 					tmp = shell->line - 1;
-			if (ft_strchr(SPACES, *tmp) && !quote)
+			if (ft_strchr(SPACES, *tmp) && !inside_quotes(shell->line, tmp))
 				*tmp = '\0';
 		}
 	}
@@ -440,7 +440,7 @@ int	process_line(t_shell *shell)
 {
 	char *tmp;
 
-	// shell->status = CONTINUE; // Set the shell status to CONTINUE
+	shell->status = CONTINUE; // Set the shell status to CONTINUE
 	tmp = shell->line;                            
 		// ????????????? Store the pointer to the original line ENTÃO CRIAS UM FICHEIRO temp E LIBERTA-LO A SEGUIR SEM NUNCA O TERES USADO PARA NADA!!!?
 	shell->line = ft_strtrim(shell->line, SPACES);

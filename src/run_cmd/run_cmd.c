@@ -6,13 +6,11 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:13:21 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/30 00:50:08 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:13:32 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-
 
 void	run_cmd(t_shell *shell, t_cmd *cmd)
 {
