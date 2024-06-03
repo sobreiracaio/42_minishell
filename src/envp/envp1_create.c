@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp1_create.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/02 20:21:08 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:21:40 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,25 +95,16 @@ t_env *copy_list(t_env *env_list_unsorted)
 }
 
 // Função para alocar memória para o char **envp_char.
-char	**alocate_memory_to_envp_char(t_shell *shell)
+void	alocate_memory_to_envp_char(t_shell *shell)
 {
-	t_env	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = shell->env_list_unsorted;
-	while (tmp)
+	if (shell->envp_char)
+		ft_free_array(shell->envp_char);
+	if (!shell->env_list_unsorted)
 	{
-		if (tmp->visible)
-			i++;
-		tmp = tmp->next;
+		shell->envp_char = NULL;
+		return;
 	}
-	shell->envp_char = (char **)malloc((i + 1) * sizeof(char *));
-	
-	if (shell->envp_char == NULL)
-		return (NULL);
-	else
-		return (shell->envp_char);
+	shell->envp_char = calloc(shell->envp_size + 1, sizeof(char*));
 }
 
 // Função para criar a char **envp a partir da lista 
@@ -122,9 +113,8 @@ char	**alocate_memory_to_envp_char(t_shell *shell)
 void	convert_envp_to_char(t_shell *shell)
 {
 	t_env	*tmp;
-	int		i;
-	char	*buffer;
-	size_t	buffer_size;
+	char *env;
+	int i;
 
 	alocate_memory_to_envp_char(shell);
 	tmp = shell->env_list_unsorted;
@@ -133,18 +123,12 @@ void	convert_envp_to_char(t_shell *shell)
 	{
 		if (tmp->visible)
 		{
-			buffer_size = ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2;
-			buffer = (char *)malloc(buffer_size * sizeof(char));
-			if (buffer == NULL)
-				return ;
-			ft_strlcpy(buffer, tmp->key, buffer_size);
-			ft_strlcat(buffer, "=", buffer_size);
-			ft_strlcat(buffer, tmp->value, buffer_size);
-			shell->envp_char[i++] = buffer;
+			env = ft_strjoin(tmp->key, "=");
+			shell->envp_char[i++] = ft_strjoin(env, tmp->value);
+			free(env);
 		}
 		tmp = tmp->next;
 	}
-	shell->envp_char[i] = NULL;
 }
 
 // Função para ir buscar os valores da key e do value do envp e adicionar 
