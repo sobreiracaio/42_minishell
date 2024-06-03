@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+         #
+#    By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/06/02 18:58:29 by crocha-s         ###   ########.fr        #
+#    Updated: 2024/06/03 15:18:01 by jode-jes         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,10 +53,11 @@ MAKE = make -C
 LIBFT_PATH = libft/
 LFLAGS = -L ${LIBFT_PATH} -lft -lreadline
 
-.c.o:
-		${CC} ${CFLAGS} ${INCLUDE} -c $< -o ${<:.c=.o}
 
 all:	${NAME}
+
+.c.o:
+		${CC} ${CFLAGS} ${INCLUDE} -c $< -o ${<:.c=.o}
 
 $(NAME): ${OBJS}
 		${MAKE} ${LIBFT_PATH}

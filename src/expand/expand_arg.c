@@ -6,7 +6,7 @@
 /*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:48:05 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 13:57:07 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:14:10 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ static int	point_to_expand_env(t_shell *sh, int point, char *tmp, char **line)
 	return (0);
 }
 
-static void	env_expand(t_shell *shell, char *tmp, char **line)
+/* static void	env_expand(t_shell *shell, char *tmp, char **line)
 {
 	while (*(++tmp))
 	{
@@ -174,6 +174,33 @@ static void	env_expand(t_shell *shell, char *tmp, char **line)
 			if (point_to_expand_env(shell, tmp - *line, tmp, line))
 			{
 				tmp = *line - 1;
+			}
+		}
+	}
+} */
+
+static void	env_expand(t_shell *shell, char *tmp, char **line)
+{
+	int	dquote;
+	int	squote;
+
+	dquote = 0;
+	squote = 0;
+	while (*(++tmp))
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+		if (*tmp == '$' && !ft_strchr(NOT_EXP, *(tmp + 1)) && !squote
+			&& !((dquote || squote) && (*(tmp + 1) == '"'
+					|| *(tmp + 1) == '\'')))
+		{
+			if (point_to_expand_env(shell, tmp - *line, tmp, line))
+			{
+				tmp = *line - 1;
+				dquote = 0;
+				squote = 0;
 			}
 		}
 	}

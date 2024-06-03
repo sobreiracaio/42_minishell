@@ -6,7 +6,7 @@
 /*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/03 12:21:40 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:33:02 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ A convert_envp_to_char é chamada no env_export e no init_shell_variables.
 A envp_sort_list é chamada no env_export e no convert_envp_to_linked_lists.
 */
 
-t_env *copy_list(t_env *env_list_unsorted) 
+/* t_env *copy_list(t_env *env_list_unsorted) 
 {
     if (!env_list_unsorted)
         return NULL;
@@ -92,10 +92,10 @@ t_env *copy_list(t_env *env_list_unsorted)
 	new_list->visible = env_list_unsorted->visible;
 	new_list->next = copy_list(env_list_unsorted->next);
 	return (new_list);
-}
+}  */
 
 // Função para alocar memória para o char **envp_char.
-void	alocate_memory_to_envp_char(t_shell *shell)
+/* void	alocate_memory_to_envp_char(t_shell *shell)
 {
 	if (shell->envp_char)
 		ft_free_array(shell->envp_char);
@@ -105,7 +105,7 @@ void	alocate_memory_to_envp_char(t_shell *shell)
 		return;
 	}
 	shell->envp_char = calloc(shell->envp_size + 1, sizeof(char*));
-}
+} */
 
 // Função para criar a char **envp a partir da lista 
 // ligada de variáveis de ambiente.
@@ -115,8 +115,16 @@ void	convert_envp_to_char(t_shell *shell)
 	t_env	*tmp;
 	char *env;
 	int i;
-
-	alocate_memory_to_envp_char(shell);
+	
+	if (shell->envp_char)
+		ft_free_array(shell->envp_char);
+	if (!shell->env_list_unsorted)
+	{
+		shell->envp_char = NULL;
+		return;
+	}
+	shell->envp_char = calloc(shell->envp_size + 1, sizeof(char*));
+	//alocate_memory_to_envp_char(shell);
 	tmp = shell->env_list_unsorted;
 	i = 0;
 	while (tmp)
@@ -182,8 +190,9 @@ void	convert_envp_to_linked_lists(char **envp, t_shell *shell)
 		//printf ("\n");
 		//printf ("\n");
 		shell->env_list_unsorted = add_node_to_envp_list(shell, key, value, 1);
+		shell->env_list_sorted = add_node_to_envp_list(shell, key, value, 1);
 		i++;
 	}
-	shell->env_list_sorted = copy_list(shell->env_list_unsorted); // Crie uma cópia da lista original
+	//shell->env_list_sortcleared = copy_list(shell->env_list_unsorted); // Crie uma cópia da lista original
 	shell->env_list_sorted = env_sorted_list(shell);
 }

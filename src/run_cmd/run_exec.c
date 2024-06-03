@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:23:51 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/27 15:52:46 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:14:10 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	run_exec(t_shell *shell, t_exec *cmd)
 		return (g_exit = 0, (void)0);
 	if (run_builtin(shell, cmd))  // Try to use argv as an command for a bultin command, if it succeeds the builtin command will be executed
 		return ;
-	//sig_handler(SIGCHILD);
+	signal_handler(SIGCHILD);
 	pid = check_fork();   // create a fork and check if its creation was successful
 	if (pid == 0) //if it is a child process
 	{
@@ -122,5 +122,5 @@ void	run_exec(t_shell *shell, t_exec *cmd)
 	else if (WIFSIGNALED(g_exit))
 		g_exit = 128 + WTERMSIG(g_exit);
 	check_exit_status();
-	//sig_handler(SIGRESTORE);
+	signal_handler(SIGRESTORE);
 }

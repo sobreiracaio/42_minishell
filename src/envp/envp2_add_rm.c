@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp2_add_rm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 02:29:21 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/31 12:15:21 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/03 15:23:31 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 		return (NULL);
 	if (env_lstadd_back(&shell->env_list_unsorted, new_node))
 		shell->envp_size++;
+	free(new_node);
 	//env_sorted_list(shell);
 	convert_envp_to_char(shell);
-	//free(new_node);
 	return (shell->env_list_unsorted);
 }
