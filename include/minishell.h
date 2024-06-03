@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/01 20:17:59 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:27:48 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ typedef struct s_pipe
 
 //process_line file
 int     process_line(t_shell *shell);
-int     inside_quotes(char *line, char *current_position);
+int     inside_quotes(t_shell *shell);
 
 //envp1 file - create
 void	convert_envp_to_linked_lists(char **envp, t_shell *shell);
@@ -162,7 +162,7 @@ t_cmd	*parsepipe(t_shell *shell);
 // Expand
 void	expand_arg(t_shell *shell, char **arg);
 int	    expand_free(char *key, int i, int j, char **line);
-int	    expand_line(char *space, int i, int j, char **line);
+int	    expand_line(char *key, int i, int j, char **line);
 void	trim_quotes(char *arg, int *len);
 void    trim_arg(t_shell *shell, char *arg);
 

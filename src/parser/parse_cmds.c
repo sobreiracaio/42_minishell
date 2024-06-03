@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:48:55 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 15:15:38 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:15:28 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 {
 	int	type;
-
 	char *token;
+	
 		// Token é o argumento. O argumento é o que vem depois do operador de redirecionamento "<" ou ">".
 	while (peek(shell, "<>")) // Verifica se o próximo token é "<" ou ">".
 	{
@@ -27,9 +27,10 @@ static t_cmd	*parseredir(t_cmd *cmd, t_shell *shell)
 			if (type != '<' || (type == '<' && ft_strcmp(token, ">")))
 				// Se o tipo for diferente de < ou se o tipo for < e o token for diferente de ">".
 				return (print_error_syntax(shell, token, 2), cmd);
-			else if (gettoken(shell, &token) != 'a')
+			else 
+				if (gettoken(shell, &token) != 'a')
 				// Se o próximo token não for argumento.
-				return (print_error_syntax(shell, token, 2), cmd);
+					return (print_error_syntax(shell, token, 2), cmd);
 		}
 		if (type == '<')
 			cmd = redir_cmd(cmd, token, O_RDONLY, 0);
@@ -71,6 +72,7 @@ static t_cmd	*parseexec(t_shell *shell)
 t_cmd	*parsepipe(t_shell *shell)
 {
 	t_cmd *cmd;
+	
 
 	if (peek(shell, "|") && shell->status == CONTINUE)
 		return (print_error_syntax(shell, shell->ps, 2), NULL);

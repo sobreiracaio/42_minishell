@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:40:13 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:12:09 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/03 18:31:57 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,24 @@ int	expand_line(char *key, int i, int j, char **line)
 	free(key);
 	return (1);
 } */
-int	expand_line(char *space, int i, int j, char **line)
+
+int	expand_line(char *key, int i, int j, char **line)
 {
-	char *new_line; // Ponteiro para a nova linha.
-	int space_len;  // Comprimento da chave.
-	int line_len;   // Comprimento da linha original.
-	space_len = ft_strlen(space);
-	line_len = ft_strlen(*line);
-	new_line = (char *)calloc(line_len + space_len - (j - i) + 1, sizeof(char));
-	if (!new_line)
-		return (0); // Retorna 0 se a alocação de memória falhar.
-	// Copia a parte da linha antes do índice 'i' para a nova linha.
-	ft_strlcpy(new_line, *line, i + 1);
-	// Concatena o espaço à nova linha.
-	ft_strlcat(new_line, space, line_len + space_len + 1);
-	// Concatena a parte da linha após o índice 'j' à nova linha.
-	ft_strlcat(new_line, *line + j, line_len + space_len + 1);
-	// Liberta a memória da linha original.
-	free(*line);
-	// Atualiza o ponteiro para a linha para apontar para a nova linha.
-	*line = new_line;
-	return (1); // Retorna 1 para indicar sucesso na expansão da linha.
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+
+	tmp = ft_substr(*line, 0, i);
+	tmp2 = ft_substr(*line, j, ft_strlen(*line) - j + 1);
+	tmp3 = *line;
+	free(tmp3);
+	*line = ft_strjoin(tmp, key);
+	free(tmp);
+	tmp = *line;
+	*line = ft_strjoin(*line, tmp2);
+	free(tmp);
+	free(tmp2);
+	return (1);
 }
 
 int	expand_free(char *key, int i, int j, char **line)

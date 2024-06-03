@@ -100,7 +100,7 @@ t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 		return (NULL);
 	if (env_lstadd_back(&shell->env_list_unsorted, new_node))
 		shell->envp_size++;
-	free(new_node);
+	//free(new_node);
 	//env_sorted_list(shell);
 	convert_envp_to_char(shell);
 	return (shell->env_list_unsorted);

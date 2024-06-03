@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_arg.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:48:05 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/03 15:14:10 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:34:21 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static int	expand_tilde(t_shell *shell, char **line)
 	tmp = *line;
 	while (*tmp)
 	{
-		if (*tmp == '~' && !inside_quotes(shell->line, tmp) && (tmp == *line
+		if (*tmp == '~' && !inside_quotes(shell) && (tmp == *line
 				|| ft_strchr(SPACES, *(tmp - 1))))
 			if (point_to_exp_tilde(shell, tmp - *line, tmp, line))
 				tmp = *line;

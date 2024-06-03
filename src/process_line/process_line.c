@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/02 20:47:04 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:41:04 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,7 +363,7 @@ Haverão algumas exceções como:
 
 #include "../../include/minishell.h"
 
-static void	insert_nullchar(t_shell *shell)
+/* static void	insert_nullchar(t_shell *shell)
 {
 	char	*tmp;
 	//int		quote;
@@ -372,7 +372,7 @@ static void	insert_nullchar(t_shell *shell)
 	tmp = shell->line;
 	while (*(++tmp))
 	{
-		if (ft_strchr(OPERATORS, *tmp) && !inside_quotes(shell->line, tmp))
+		if (ft_strchr(OPERATORS, *tmp) && !inside_quotes(shell))
 			// Se o caractere for um operador e não estiver dentro de aspas
 		{
 			if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1)))
@@ -386,23 +386,18 @@ static void	insert_nullchar(t_shell *shell)
 				if (expand_line(" ", tmp - shell->line + 1, tmp - shell->line
 						+ 1, &shell->line))
 					tmp = shell->line - 1;
-			if (ft_strchr(SPACES, *tmp) && !inside_quotes(shell->line, tmp))
+			if (ft_strchr(SPACES, *tmp) && !inside_quotes(shell))
 				*tmp = '\0';
 		}
 	}
 	shell->line_len = ft_strlen(shell->line);
-}
+} */
 
-// Função para alternar o status da citação e verificar se existem aspas não correspondidas
-int	inside_quotes(char *line, char *current_position)
+static void	expand_char(t_shell *sh, char *tmp)
 {
-	//int	quote;
-	char *tmp;
-	
 	int		dquote;
 	int		squote;
-    tmp = line;
-	
+
 	dquote = 0;
 	squote = 0;
 	while (*(++tmp))
@@ -411,35 +406,112 @@ int	inside_quotes(char *line, char *current_position)
 			dquote = !dquote;
 		if (*tmp == '\'' && !dquote)
 			squote = !squote;
-		if (&line == &current_position)
+		if (ft_strchr(OPERATORS, *tmp) && !dquote && !squote)
 		{
-			free(line);
-			break ;
+			if (tmp != sh->line && !ft_strchr(" |><", *(tmp - 1)))
+			{
+				if (expand_line(" ", tmp - sh->line, tmp - sh->line, &sh->line))
+					tmp = sh->line - 1;
+			}
+			else if (!ft_strchr(" |><", *(tmp + 1)))
+				if (expand_line(" ", tmp - sh->line + 1,
+						tmp - sh->line + 1, &sh->line))
+					tmp = sh->line - 1;
 		}
-		line++;
 	}
-	//free(line);
-	return (dquote || squote);
-		// Retorna o status de citação atual se nenhuma das condições acima for verdadeira
+	sh->line_len = ft_strlen(sh->line);
 }
 
+static void	trim_line(t_shell *shell)
+{
+	char	*tmp;
+	int		squote;
+	int		dquote;
+
+	dquote = 0;
+	squote = 0;
+	tmp = shell->line;
+	while (*tmp)
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+		if (ft_strchr(SPACES, *tmp) && !squote && !dquote)
+			*tmp = '\0';
+		tmp++;
+	}
+}
+
+// Função para alternar o status da citação e verificar se existem aspas não correspondidas
+ int	inside_quotes(t_shell *shell)
+{
+	int	dquote;
+	int squote;
+	char *tmp;
+
+	dquote = 0;
+	squote = 0;
+	tmp = shell->line -1;
+	
+	while (*(++tmp))
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+	// 	if (*tmp == && !squote)
+	// 		if (*(tmp + 1) != '&' && *(tmp - 1) != '&')
+	// 			return (print_error(shell, "no support for single &", NULL, 2));
+	// }
+	
+	
+	}
+	if (dquote || squote)
+		return (print_error(shell, ERROR_QUOTE, NULL, 2));
+	return (0);
+} 
+
 // Função para verificar se existem pipes não correspondidos
-static int	check_pipes(t_shell *shell)
+/* static int	check_pipes(t_shell *shell)
 {
 	if (*shell->line == '|')
 		return (print_error_syntax(shell, shell->line, 2));
 	if (shell->line[strlen(shell->line) - 1] == '|')
 		return (print_error(shell, "Open | not supported", NULL, 2));
 	return (0);
-}
+} */
 
+		
 // Função para verificar erros de sintaxe
-static int	check_syntax_errors(t_shell *shell)
+static int	check_syntax_errors(t_shell *shell, int dquote, int squote)
 {
-	if (!check_pipes(shell) && (!inside_quotes(shell->line, shell->line)))
+	char	*tmp;
+
+	tmp = shell->line - 1;
+	if (ft_strchr("|;&", *shell->line))
+		return (print_error_syntax(shell, shell->line, 2));
+	if (shell->line[ft_strlen(shell->line) - 1] == '|'
+		|| shell->line[ft_strlen(shell->line) - 1] == '&')
+		return (print_error(shell,
+				"Open | or || or && not supported", NULL, 2));
+	while (*++tmp)
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+		if (*tmp == '&' && !dquote && !squote)
+			if (*(tmp + 1) != '&' && *(tmp - 1) != '&')
+				return (print_error(shell, "no support for single &", NULL, 2));
+	}
+	if (dquote || squote)
+		return (print_error(shell, ERROR_QUOTE, NULL, 2));
+	return (0);
+	/* if (!check_pipes(shell) && (!inside_quotes(shell)))
 		// Se não houver erros de pipe e não houver citações não correspondidas
 		return (0);
-	return (1);
+	return (1); */
 }
 
 int	process_line(t_shell *shell)
@@ -458,9 +530,11 @@ int	process_line(t_shell *shell)
 		return (0);
 	add_history(shell->line);                     
 		// É uma função da biblioteca readline que adiciona a linha ao histórico de comandos. Adds the line to the command history.
-	if (check_syntax_errors(shell))               
+	if (check_syntax_errors(shell,0,0))               
 		// Verifica se há erros de syntax nos pipes e nas aspas.
 		return (0);
-	insert_nullchar(shell);
+	//insert_nullchar(shell);
+	expand_char(shell, shell->line - 1);
+	trim_line(shell);
 	return (1); // Return 1
 }
