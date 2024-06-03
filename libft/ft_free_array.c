@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luide-so <luide-so@student.42.fr>          +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 21:06:54 by luide-so          #+#    #+#             */
-/*   Updated: 2023/07/19 13:40:50 by luide-so         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:52:36 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,3 +21,21 @@ void	ft_free_array(char **array)
 		free(array[i++]);
 	free(array);
 }
+
+
+// void	ft_free_array(char **array)
+// {
+// 	int	i;
+
+// 	if (!array)
+// 		return;
+// 	i = 0;
+// 	while (array[i])
+// 	{
+// 		free(array[i]);
+// 		array[i] = NULL; // Garantir que o ponteiro não seja usado novamente
+// 		i++;
+// 	}
+// 	free(array);
+// 	array = NULL; // Garantir que o ponteiro não seja usado novamente
+// }

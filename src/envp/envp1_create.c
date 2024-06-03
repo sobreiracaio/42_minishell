@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/01 21:25:20 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/02 20:21:08 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,16 @@ t_env *copy_list(t_env *env_list_unsorted)
     if (!env_list_unsorted)
         return NULL;
 
-    t_env *new_list = malloc(sizeof(t_env));
+    t_env *new_list = (t_env*)malloc(sizeof(t_env));
 	new_list->key = env_list_unsorted->key;
 	new_list->value = env_list_unsorted->value;
 	new_list->visible = env_list_unsorted->visible;
 	new_list->next = copy_list(env_list_unsorted->next);
-	return new_list;
+	return (new_list);
 }
 
 // Função para alocar memória para o char **envp_char.
-void	**alocate_memory_to_envp_char(t_shell *shell)
+char	**alocate_memory_to_envp_char(t_shell *shell)
 {
 	t_env	*tmp;
 	int		i;
@@ -109,10 +109,11 @@ void	**alocate_memory_to_envp_char(t_shell *shell)
 		tmp = tmp->next;
 	}
 	shell->envp_char = (char **)malloc((i + 1) * sizeof(char *));
+	
 	if (shell->envp_char == NULL)
 		return (NULL);
 	else
-		return ((void **)shell->envp_char);
+		return (shell->envp_char);
 }
 
 // Função para criar a char **envp a partir da lista 
@@ -185,17 +186,17 @@ void	convert_envp_to_linked_lists(char **envp, t_shell *shell)
 	i = 0;
 	while (envp[i])
 	{	
-		printf ("\n");
-		printf("Before strtok: %s\n", envp[i]);
-		printf ("\n");
+		//printf ("\n");
+		//printf("Before strtok: %s\n", envp[i]);
+		//printf ("\n");
 		key = ft_strtok(envp[i], "=");
 		value = ft_strtok(NULL, "=");
-		printf("Key after strtok: %s\n", key);
-		printf("Value after strtok: %s\n", value);
-		printf ("\n");
-		printf("After strtok: %s\n", envp[i]);
-		printf ("\n");
-		printf ("\n");
+		//printf("Key after strtok: %s\n", key);
+		//printf("Value after strtok: %s\n", value);
+		//printf ("\n");
+		//printf("After strtok: %s\n", envp[i]);
+		//printf ("\n");
+		//printf ("\n");
 		shell->env_list_unsorted = add_node_to_envp_list(shell, key, value, 1);
 		i++;
 	}

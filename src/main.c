@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/01 22:58:38 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/02 20:21:48 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static int	init_shell_variables(t_shell *shell, char **envp)
 	*shell = (t_shell){0};
 	convert_envp_to_linked_lists(envp, shell);
 	convert_envp_to_char(shell); // ERA PRA ADICIONAR ESTAS DUAS FUNCOES?
+	printf("shell variables successfully initiated");
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/01 20:44:51 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/02 20:47:04 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,24 +396,30 @@ static void	insert_nullchar(t_shell *shell)
 // Função para alternar o status da citação e verificar se existem aspas não correspondidas
 int	inside_quotes(char *line, char *current_position)
 {
-	int	quote;
-
-	quote = 0;
-	while (*line)
+	//int	quote;
+	char *tmp;
+	
+	int		dquote;
+	int		squote;
+    tmp = line;
+	
+	dquote = 0;
+	squote = 0;
+	while (*(++tmp))
 	{
-		if (*line == '"' || *line == '\'')
-		{
-			if (quote == 0)
-				quote = *line;
-					// Se a quote não existir é definida aqui como existente
-			else if (quote == *line)
-				quote = 0; // Se a quote existir é definida aqui
-		}
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
 		if (&line == &current_position)
+		{
+			free(line);
 			break ;
+		}
 		line++;
 	}
-	return (quote);
+	//free(line);
+	return (dquote || squote);
 		// Retorna o status de citação atual se nenhuma das condições acima for verdadeira
 }
 
