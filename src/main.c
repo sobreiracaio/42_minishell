@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/07 12:41:39 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:45:28 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static int	to_run(t_shell *shell)
 {
 	signal_handler(SIGRESTORE);
 	shell->status = STOP;
-	shell->exec_cmd = true;
 	shell->line = get_prompt(shell);
 	if (shell->line && process_line(shell))
 	{

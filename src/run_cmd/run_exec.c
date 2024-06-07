@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:23:51 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/07 12:30:04 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/07 19:24:57 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	expand_argv(t_shell *shell, char **argv)
 	expanded = (ft_strchr(argv[0], '$') == 0);
 	expand_arg(shell, &argv[0]);
 	len = ft_strlen(argv[0]);
-	trim_arg(argv[0]);
+	arg_insert_null(argv[0]);
 	trim_quotes(argv[0], &len);
 	i = 1;
 	tmp = argv[0];
