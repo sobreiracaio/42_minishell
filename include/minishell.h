@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/06 22:46:17 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/07 12:06:55 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,5 +202,4 @@ void				ms_exit(t_shell *shell, t_exec *cmd);
 
 void				wait_children(t_shell *shell);
 void				signal_handler(int sig);
-// void	close_fds_and_sig_handler(int fd[2], int sig);
 #endif

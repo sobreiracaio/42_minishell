@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/06 19:09:40 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/07 12:41:39 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	}
 	else
-		printf("\nMinishell 1.0\n");
+		printf("\nMinishell 1.0: Authors: jode-jes, crocha-s.\n");
 	while (to_run(&shell))
 		;
 	clear_history();
