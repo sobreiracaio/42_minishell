@@ -5,12 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 18:20:46 by luide-so          #+#    #+#             */
-/*   Updated: 2024/06/07 02:12:47 by crocha-s         ###   ########.fr       */
+/*   Created: 2024/06/08 19:33:57 by crocha-s          #+#    #+#             */
+/*   Updated: 2024/06/08 19:33:59 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// const char *c is the base of the hex number, either 'x' or 'X'
 
 #include "libft.h"
 
