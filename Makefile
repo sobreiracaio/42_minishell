@@ -6,7 +6,7 @@
 #    By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/06/08 00:11:43 by crocha-s         ###   ########.fr        #
+#    Updated: 2024/06/09 18:08:14 by crocha-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,6 @@ SRC = src/main.c \
 	  	src/run_cmd/run_here.c \
 	  	src/built_ins/run_builtin.c \
 	  	src/built_ins/cd.c \
-	  	src/built_ins/chdir.c \
 	  	src/built_ins/echo.c \
 	  	src/built_ins/env.c \
 	  	src/built_ins/exit.c \

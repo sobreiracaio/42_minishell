@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 18:52:19 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/06 23:04:24 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/09 18:07:30 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,11 @@ static char	*path_slash(char *cdpath, char **path)
 	}
 }
 
-static bool	cdpath_try(t_shell *shell, char **cdpath, char *path, int index)
-{
-	char	*tmp;
-	char	*tmp_path;
-
-	tmp_path = path_slash(cdpath[index], &path);
-	tmp = ft_strjoin(cdpath[index], tmp_path);
-	free(tmp_path);
-	if (ms_chdir(shell, tmp))
-	{
-		tmp[ft_strlen(tmp) - 1] = '\0';
-		ft_putendl_fd(tmp, STDOUT_FILENO);
-		ft_free_array(cdpath);
-		free(tmp);
-		return (true);
-	}
-	free(tmp);
-	return (false);
-}
-
 static bool	cdpath(t_shell *shell, char *path)
 {
 	char	**cdpath;
+	char	*tmp;
+	char	*tmp_path;
 	int		i;
 
 	if (!env_get("CDPATH", shell) || path[0] == '/')
@@ -69,12 +51,24 @@ static bool	cdpath(t_shell *shell, char *path)
 	i = 0;
 	while (cdpath[i])
 	{
-		if (cdpath_try(shell, cdpath, path, i++))
+		tmp_path = path_slash(cdpath[i], &path);
+		tmp = ft_strjoin(cdpath[i], tmp_path);
+		free(tmp_path);
+		if (ms_chdir(shell, tmp))
+		{
+			tmp[ft_strlen(tmp) - 1] = '\0';
+			ft_putendl_fd(tmp, STDOUT_FILENO);
+			ft_free_array(cdpath);
+			free(tmp);
 			return (true);
+		}
+		free(tmp);
+		i++;
 	}
 	ft_free_array(cdpath);
 	return (false);
 }
+
 
 static void	hyphen_cd_print(t_shell *shell, char *pwd)
 {
@@ -88,6 +82,26 @@ static void	hyphen_cd_print(t_shell *shell, char *pwd)
 		ft_putendl_fd(str, STDOUT_FILENO);
 		free(str);
 	}
+}
+
+bool	ms_chdir(t_shell *shell, char *path)
+{
+	char	*tmp_pwd;
+
+	if (!path)
+		return (false);
+	tmp_pwd = getcwd(NULL, 0);
+	if (chdir(path) != 0)
+	{
+		free(tmp_pwd);
+		return (false);
+	}
+	env_export(shell, "OLDPWD", tmp_pwd, 1);
+	free(tmp_pwd);
+	tmp_pwd = getcwd(NULL, 0);
+	env_export(shell, "PWD", tmp_pwd, 1);
+	free(tmp_pwd);
+	return (true);
 }
 
 void	ms_cd(t_shell *shell, t_exec *cmd)
