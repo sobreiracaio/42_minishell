@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 18:52:19 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/09 18:07:30 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/09 18:22:01 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,16 @@ static char	*path_slash(char *cdpath, char **path)
 	}
 }
 
-static bool	cdpath(t_shell *shell, char *path)
+static bool	cdpath(t_shell *shell, char *path, int i)
 {
 	char	**cdpath;
 	char	*tmp;
 	char	*tmp_path;
-	int		i;
 
 	if (!env_get("CDPATH", shell) || path[0] == '/')
 		return (false);
 	cdpath = ft_split(env_get("CDPATH", shell), ':');
-	i = 0;
-	while (cdpath[i])
+	while (cdpath[i++])
 	{
 		tmp_path = path_slash(cdpath[i], &path);
 		tmp = ft_strjoin(cdpath[i], tmp_path);
@@ -63,12 +61,10 @@ static bool	cdpath(t_shell *shell, char *path)
 			return (true);
 		}
 		free(tmp);
-		i++;
 	}
 	ft_free_array(cdpath);
 	return (false);
 }
-
 
 static void	hyphen_cd_print(t_shell *shell, char *pwd)
 {
@@ -124,7 +120,8 @@ void	ms_cd(t_shell *shell, t_exec *cmd)
 			hyphen_cd_print(shell, env_get("PWD", shell));
 		}
 		else if (cmd->argv[1][0]
-			&& !ms_chdir(shell, cmd->argv[1]) && !cdpath(shell, cmd->argv[1]))
+			&& !ms_chdir(shell, cmd->argv[1])
+			&& !cdpath(shell, cmd->argv[1], 0))
 			print_error(shell, "cd: no such file or directory",
 				cmd->argv[1], 1);
 	}
