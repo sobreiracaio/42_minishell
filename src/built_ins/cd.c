@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 18:52:19 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/09 18:22:01 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/09 18:26:38 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static bool	cdpath(t_shell *shell, char *path, int i)
 	return (false);
 }
 
-static void	hyphen_cd_print(t_shell *shell, char *pwd)
+static void	last_pwd(t_shell *shell, char *pwd)
 {
 	char	*str;
 
@@ -117,7 +117,7 @@ void	ms_cd(t_shell *shell, t_exec *cmd)
 			{
 				print_error(shell, "cd", "OLDPWD not set", 1);
 			}
-			hyphen_cd_print(shell, env_get("PWD", shell));
+			last_pwd(shell, env_get("PWD", shell));
 		}
 		else if (cmd->argv[1][0]
 			&& !ms_chdir(shell, cmd->argv[1])
