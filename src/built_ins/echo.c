@@ -6,41 +6,36 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:36:24 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/01 23:23:10 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:28:55 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_contains_only(char *str, char *characters)
+static int	check_flag(t_exec *cmd, int *arg_index)
 {
-	while (*str)
-	{
-		if (!ft_strchr(characters, *str++))
-			return (0);
-	}
-	return (1);
-}
+	int	flag = 0;
+	char	*arg;
 
-static int	has_flag(t_exec *cmd, int *arg_index)
-{
-	int	flag;
-
-	flag = 0;
-	while (cmd->argv[++*arg_index])
+	while ((arg = cmd->argv[++*arg_index]))
 	{
-		if (cmd->argv[*arg_index][0] == '-')
+		if (arg[0] == '-')
 		{
-			if (ft_contains_only(&cmd->argv[*arg_index][1], "n"))
-				flag = 1;
-			else
-				break ;
+			int i = 1;
+			while (arg[i])
+			{
+				if (arg[i] != 'n')
+					return flag;
+				i++;
+			}
+			flag = 1;
 		}
 		else
-			break ;
+			break;
 	}
-	return (flag);
+	return flag;
 }
+
 
 void	ms_echo(t_exec *cmd)
 {
@@ -48,7 +43,7 @@ void	ms_echo(t_exec *cmd)
 	int	flag;
 
 	i = 0;
-	flag = has_flag(cmd, &i);
+	flag = check_flag(cmd, &i);
 	if (cmd->argv[i])
 	{
 		ft_putstr_fd(cmd->argv[i], STDOUT_FILENO);
