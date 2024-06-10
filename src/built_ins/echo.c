@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:36:24 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/10 17:28:55 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:40:20 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_flag(t_exec *cmd, int *arg_index)
 
 	while ((arg = cmd->argv[++*arg_index]))
 	{
-		if (arg[0] == '-')
+	if (arg[0] == '-' && arg[1] == 'n')
 		{
 			int i = 1;
 			while (arg[i])

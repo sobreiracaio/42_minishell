@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:37:49 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/08 19:37:52 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/10 19:28:16 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,33 +92,4 @@ void	run_heredoc(t_shell *shell, t_here *here)
 		run_cmd(shell, here->cmd);
 	dup2(here->fdin, STDIN_FILENO);
 	unlink("here_doc");
-}
-
-t_cmd	*here_cmd(t_cmd *cmd, char *eof)
-{
-	t_here	*here;
-	t_cmd	*tmp;
-	t_cmd	*tmp2;
-
-	here = (t_here *)ft_calloc(1, sizeof(t_here));
-	here->type = HERE_DOC;
-	here->eof = ft_strdup(eof);
-	here->mode = O_WRONLY | O_CREAT | O_TRUNC;
-	here->fdin = dup(STDIN_FILENO);
-	here->fdout = dup(STDOUT_FILENO);
-	if (cmd->type == EXEC || cmd->type == REDIR)
-		here->cmd = cmd;
-	else
-	{
-		tmp = cmd;
-		while (tmp->type != EXEC && tmp->type != REDIR)
-		{
-			tmp2 = tmp;
-			tmp = ((t_redir *)tmp)->cmd;
-		}
-		((t_redir *)tmp2)->cmd = (t_cmd *)here;
-		here->cmd = tmp;
-		return (cmd);
-	}
-	return ((t_cmd *)here);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_constructors.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:32:08 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 13:15:55 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/10 19:24:52 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,33 @@ t_cmd	*exec_cmd(void)
 	cmd = (t_exec *)ft_calloc(1, sizeof(t_exec));
 	cmd->type = EXEC;
 	return ((t_cmd *)cmd);
+}
+
+t_cmd	*here_cmd(t_cmd *cmd, char *eof)
+{
+	t_here	*here;
+	t_cmd	*tmp;
+	t_cmd	*tmp2;
+
+	here = (t_here *)ft_calloc(1, sizeof(t_here));
+	here->type = HERE_DOC;
+	here->eof = ft_strdup(eof);
+	here->mode = O_WRONLY | O_CREAT | O_TRUNC;
+	here->fdin = dup(STDIN_FILENO);
+	here->fdout = dup(STDOUT_FILENO);
+	if (cmd->type == EXEC || cmd->type == REDIR)
+		here->cmd = cmd;
+	else
+	{
+		tmp = cmd;
+		while (tmp->type != EXEC && tmp->type != REDIR)
+		{
+			tmp2 = tmp;
+			tmp = ((t_redir *)tmp)->cmd;
+		}
+		((t_redir *)tmp2)->cmd = (t_cmd *)here;
+		here->cmd = tmp;
+		return (cmd);
+	}
+	return ((t_cmd *)here);
 }
