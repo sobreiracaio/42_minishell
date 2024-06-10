@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/08 19:39:23 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/09 21:29:28 by crocha-s         ###   ########.fr       */
+/*   Created: 2024/06/11 00:32:13 by crocha-s          #+#    #+#             */
+/*   Updated: 2024/06/11 00:41:31 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,38 @@ static void	print_envp_sorted(t_shell *shell, int export)
 	tmp = shell->env_list_sorted;
 }
 
-static bool	var_is_valid(t_shell *shell, char *arg)
+static bool	valid_var(t_shell *shell, char *arg)
 {
 	int	i;
 
 	i = 0;
 	if (!ft_isalpha(arg[i]) && arg[i] != '_')
 		return (error_inside(shell, "export: ", arg, 1));
-	i++;
-	while (arg[i] && arg[i] != '=')
+	while (arg[++i])
 	{
+		if (arg[i] == '=')
+			break ;
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 			return (error_inside(shell, "export: ", arg, 1));
-		i++;
 	}
 	return (true);
 }
 
-static bool	args_is_valid(char **argv)
+static bool	valid_args(char **argv)
 {
-	int	i;
+	int		i;
+	bool	flag;
 
 	if (!argv[1])
 		return (false);
-	i = 1;
-	while (argv[i])
+	i = 0;
+	flag = false;
+	while (argv[++i])
 	{
 		if (*argv[i])
-			return (true);
-		i++;
+			flag = true;
 	}
-	return (false);
+	return (flag);
 }
 
 static void	run_export(t_shell *shell, t_exec *cmd)
@@ -75,14 +76,14 @@ static void	run_export(t_shell *shell, t_exec *cmd)
 	char	*value;
 	char	**split;
 
-	if (!args_is_valid(cmd->argv))
+	if (!valid_args(cmd->argv))
 		print_envp_sorted(shell, 1);
 	else
 	{
 		i = 0;
 		while (cmd->argv[++i])
 		{
-			if (!*cmd->argv[i] || !var_is_valid(shell, cmd->argv[i]))
+			if (!*cmd->argv[i] || !valid_var(shell, cmd->argv[i]))
 				continue ;
 			if (ft_strchr(cmd->argv[i], '='))
 			{

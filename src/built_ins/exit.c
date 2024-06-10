@@ -5,32 +5,45 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/08 19:39:14 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/09 21:05:51 by crocha-s         ###   ########.fr       */
+/*   Created: 2024/06/10 22:57:29 by crocha-s          #+#    #+#             */
+/*   Updated: 2024/06/11 00:41:19 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static bool	check_exit_code(char *str)
+static bool	ft_isnumber(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str[i])
+		return (false);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i++]))
+			return (false);
+	}
+	return (true);
+}
+
+static bool	islonglong(char *str)
 {
 	int	is_negative;
 	int	len;
 
-	is_negative = 0;
-	while (*str == '+' || *str == '-' || *str == ' ')
+	if (*str == '-')
 	{
-		if (*str == '-')
-			is_negative = 1;
+		is_negative = 1;
 		str++;
 	}
-	while (*str == '0')
+	while (*str == '0' || *str == ' ')
 		str++;
-	if (!ft_isdigit(*str))
+	if (!ft_isnumber(str))
 		return (false);
-	while (*str && ft_isdigit(*str))
-		str++;
-	len = str - str;
+	len = ft_strlen(str);
 	if (len > 19)
 		return (false);
 	if (is_negative)
@@ -48,7 +61,7 @@ void	ms_exit(t_shell *shell, t_exec *cmd)
 		print_error(shell, cmd->argv[0], "too many arguments", 2);
 	if (cmd->argv[1])
 	{
-		if (!check_exit_code(cmd->argv[1]) && ft_strcmp(cmd->argv[1], "0"))
+		if (!islonglong(cmd->argv[1]) && ft_strcmp(cmd->argv[1], "0"))
 		{
 			err = ft_strjoin(cmd->argv[1], ": numeric argument required");
 			print_error(shell, cmd->argv[0], err, 2);
