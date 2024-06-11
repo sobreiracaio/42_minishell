@@ -6,7 +6,7 @@
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:23:51 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/11 00:08:14 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/11 01:01:19 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	expand_argv(t_shell *shell, char **argv)
 
 	if (!argv[0])
 		return ;
-	expanded = (ft_strchr(argv[0], '$') == 0);
+	expanded = (ft_strchr(argv[0], '$') != 0);
 	expand_arg(shell, &argv[0]);
 	len = ft_strlen(argv[0]);
 	arg_insert_null(argv[0]);
