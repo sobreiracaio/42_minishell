@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 14:28:33 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/06 22:47:08 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/13 01:50:42 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ char	*env_get(char *key, t_shell *shell)
 	t_env	*tmp;
 
 	tmp = shell->env_list_unsorted;
-	while (tmp)
+	while (tmp) // Enquanto a lista unsorted existir, imprime todas as variáveis de ambiente.
 	{
-		if (!ft_strcmp(tmp->key, key))
-			return (tmp->value);
+		if (!ft_strcmp(tmp->key, key)) // Se a chave for igual à chave fornecida.
+			return (tmp->value); // Retorna o valor.
 		tmp = tmp->next;
 	}
 	return (NULL);

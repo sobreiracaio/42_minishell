@@ -6,12 +6,13 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:13:21 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/07 18:43:39 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/13 01:11:15 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// Esta função verifica que tipo de comando é e chama a função correspondente.
 void	run_cmd(t_shell *shell, t_cmd *cmd)
 {
 	if (cmd->type == EXEC)

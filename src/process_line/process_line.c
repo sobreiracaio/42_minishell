@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/07 19:32:31 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/12 16:45:49 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,7 @@ Haverão algumas exceções como:
 
 #include "../../include/minishell.h"
 
-// Função para inserir espaços entre os operadores e os argumentos.
+// Função para inserir espaços entre os operadores e os argumentos, isto se não tivermos dentro de aspas. Exemplo: ls -l <<eof|wc -l, é expandida na função insert_space para ficar ls -l << eof | wc -l, e dps são inseridos nulos em vez de espaços na função insert_nullchar, ficando: ls\0-l\0<<\0eof\0|\0wc\0-l. Pq fazemos isto? Para que possamos dividir o comando em argumentos para que o possamos correr no peek até ao nulo. Qd detetamos o nulo sabemos que é um novo argumento.
 static void	insert_space(t_shell *shell, char *tmp)
 {
 	int	quote;
@@ -379,24 +379,24 @@ static void	insert_space(t_shell *shell, char *tmp)
 			quote = *tmp;
 		else if (quote == *tmp)
 			quote = 0;
-		if (ft_strchr(OPERATORS, *tmp) && !quote)
+		if (ft_strchr(OPERATORS, *tmp) && !quote) // Se encontrarmos um dos operadores e não estivermos dentro de aspas, então colocamos um espaço.
 		{
-			if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1)))
+			if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1))) // Se o tmp não for igual à linha e o que está antes do tmp não for um dos operadores, então colocamos um espaço.
 			{
 				if (expand(" ", tmp - shell->line, tmp - shell->line,
 						&shell->line))
 					tmp = shell->line - 1;
 			}
-			else if (!ft_strchr(" |><", *(tmp + 1)))
+			else if (!ft_strchr(" |><", *(tmp + 1))) // Se o que está dps do tmp não for um dos operadores, então colocamos um espaço.
 				if (expand(" ", tmp - shell->line + 1, tmp - shell->line + 1,
 						&shell->line))
 					tmp = shell->line - 1;
 		}
 	}
-	shell->line_len = ft_strlen(shell->line);
+	shell->line_len = ft_strlen(shell->line); // o len será necessário para o expandir a seguir. Se não o fizermos, o expandir não saberá onde termina a string. Portanto será útil na função expand. Porque não o fazemos a seguir à função insert_null_char? Fácil! Pq essa função inclui nulos e retira os espaços, e a função strlen percorre a linha até encontrar o nulo. Logo se o fizessemos ficaíamos com um valor de len da linha errado.
 }
 
-// Função para inserir o carater nulo.
+// Função para inserir o carater nulo. Verifica se estamos ou não dentro de aspas e caso não estejamos coloca nulo entre os argumentos. Exemplo: ls -l <<eof|wc -l, é expandida na função insert_space para ficar ls -l << eof | wc -l, e dps são inseridos nulos em vez de espaços, ficando: ls\0-l\0<<\0eof\0|\0wc\0-l. Pq fazemos isto? Para que possamos dividir o comando em argumentos para que o possamos correr no peek até ao nulo. Qd detetamos o nulo sabemos que é um novo argumento.
 void	insert_nullchar(t_shell *shell)
 {
 	char	*tmp;
@@ -413,7 +413,7 @@ void	insert_nullchar(t_shell *shell)
 			else if (quote == *tmp)
 				quote = 0;
 		}
-		if (ft_strchr(SPACES, *tmp) && !quote)
+		if (ft_strchr(SPACES, *tmp) && !quote) // Se não estivermos dentro de aspas e encontrarmos um espaço, colocamos um nulo.
 			*tmp = '\0';
 		tmp++;
 	}
@@ -428,7 +428,7 @@ int	check_pipes(t_shell *shell)
 	return (0);
 }
 
-// Função para verificar se há erros de syntax nos pipes e nas aspas.
+// Função para verificar se há erros de syntax nos pipes e nas aspas. Se os pipes estiverem no início ou no fim da linha de comando, dá erro. Se as aspas não tiverem correspondência, dá erro.
 static int	check_quotes(t_shell *shell)
 {
 	char	*tmp;
@@ -456,18 +456,18 @@ int	process_line(t_shell *shell)
 {
 	char	*tmp;
 
-	shell->status = CONTINUE;
-	tmp = shell->line;
-	shell->line = ft_strtrim(shell->line, SPACES);
+	shell->status = CONTINUE; // O status muda para CONTINUE de forma a que o loop principal continue a correr.
+	tmp = shell->line; // Aqui guardamos a linha de comando numa variável temporária para que posssamos lhe dar free a seguir na linha free(tmp); uma vez q vamos usar essa variável na função trim, onde a mesma é passada como argumento.
+	shell->line = ft_strtrim(shell->line, SPACES); // Retira espaços no início e no fim da linha de comando.
 	free(tmp);
 	if (shell->line[0] == '\0')
 		return (0);
-	add_history(shell->line);
-	if (check_quotes(shell))
+	add_history(shell->line); // Adiciona a linha de comando ao histórico.
+	if (check_quotes(shell)) // Verifica se há erros de syntax nas aspas: se estão unmatched.
 		return (0);
-	if (check_pipes(shell))
+	if (check_pipes(shell))// Verifica se há erros de syntax nos pipes: se estão no início ou no fim da linha de comando.
 		return (0);
-	insert_space(shell, shell->line - 1);
-	insert_nullchar(shell);
-	return (1);
+	insert_space(shell, shell->line - 1); // Insere espaços entre os operadores e os argumentos, isto se não tivermos dentro de aspas. Ou seja, expande.
+	insert_nullchar(shell); // Insere o carater nulo. Verifica se estamos ou não dentro de aspas e caso não estejamos coloca nulo entre os argumentos. Para quê? Para que possamos continuar a análise da linha no Parser. Mais especificamente no peek, que corre até detetar nulos ou até o inicio da linha chegar ao fim, ou seja, ps ser igual a es.
+	return (1); // Se tudo tiver corrido bem, retorna 1.
 }

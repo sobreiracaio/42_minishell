@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   run_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:38:07 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/08 19:38:09 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/13 01:12:57 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// Esta função expande o arquivo de redirecionamento. Como? Ela chama a função expand_arg, que expande o tilde e as variáveis de ambiente. Em seguida, ela chama a função ft_strlen para obter o comprimento do arquivo de redirecionamento. Em seguida, ela chama a função arg_insert_null para inserir um caractere nulo em cada espaço em branco que não está entre aspas. Por fim, ela chama a função trim_quotes para remover as aspas do arquivo de redirecionamento.
 static int	expand_file(t_shell *shell, char **file)
 {
 	int	len;
@@ -23,6 +24,7 @@ static int	expand_file(t_shell *shell, char **file)
 	return (1);
 }
 
+// Esta função executa um comando de redirecionamento. Ela salva o descritor de arquivo original, abre o arquivo de redirecionamento e executa o comando. Após a execução do comando, o descritor de arquivo é restaurado.
 void	run_redir(t_shell *shell, t_redir *cmd)
 {
 	int	fd;

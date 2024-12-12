@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 02:29:21 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/06 22:26:57 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/12 12:22:22 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_env	*env_lstnew(char *key, char *value, int visible)
 	return (new);
 }
 
-// Função para adicionar um nó à lista de envp ordenada
+// Função para adicionar um nó à lista de envp ordenada. É semelhante à sort_list do exame rank 2, contudo aqui fazemos com um ponteiro de um ponteiro. Lá fazemos com a alteração do valor da data (aqui o homólogo seria o valor de key, e o valor de value. Teríamos de alterar os dois. Daí termos feito com ponteiro de ponteiro. Ficou mais fácil e com menos código (o que foi ótimo devido ao limite de 25 linhas exigido))
 void	add_node_to_envp_sorted_list(t_shell *shell, char *key, char *value,
 		int visible)
 {

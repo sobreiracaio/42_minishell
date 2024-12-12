@@ -6,12 +6,13 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 00:27:21 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/06 22:54:52 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/13 01:24:42 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// Esta função define perante que tipo de built-in estamos presentes. Se o built-in for echo, a função ms_echo é chamada. Se o built-in for cd, a função ms_cd é chamada. Se o built-in for pwd, a função ms_pwd é chamada. Se o built-in for export, a função ms_export é chamada. Se o built-in for unset, a função ms_unset é chamada. Se o built-in for env, a função ms_env é chamada. Se o built-in for exit, a função ms_exit é chamada.
 int	run_builtin(t_shell *shell, t_exec *cmd)
 {
 	if (!ft_strcmp(cmd->argv[0], "echo"))

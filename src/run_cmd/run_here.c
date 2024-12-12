@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   run_here.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:37:49 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/06/11 00:41:08 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/06/13 01:22:24 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// Esta função expande o here_doc. Ela percorre a linha e verifica se o caractere atual é um til ou uma variável de ambiente. Se o caractere atual for um til, a função expand é chamada para expandir o til. Se o caractere atual for uma variável de ambiente, a função expand é chamada para expandir a variável de ambiente.
 static void	expand_heredoc(t_shell *shell, char **line)
 {
 	int		i;
@@ -40,6 +41,7 @@ static void	expand_heredoc(t_shell *shell, char **line)
 	}
 }
 
+// Esta função lê o here_doc. Ela abre o arquivo "here_doc" com o modo de leitura e escrita. Em seguida, ela chama a função dup2 para duplicar o descritor de arquivo de entrada e saída padrão. Em seguida, ela lê uma linha digitada pelo usuário. Se a linha for NULL, é impresso um erro. Se a linha for igual ao delimitador, a linha é liberada e a função é encerrada. Se a linha for diferente do delimitador, a função expand_heredoc é chamada para expandir as variáveis de ambiente e o til. Em seguida, a linha é impressa no arquivo "here_doc" e a memória alocada para a linha é liberada. Após o loop, o descritor de arquivo é fechado e a variável global g_exit é definida como 0. Por fim, a função free_exit é chamada.
 static void	heredoc_reader(t_shell *shell, t_here *here, int fd)
 {
 	char	*line;
@@ -69,6 +71,7 @@ static void	heredoc_reader(t_shell *shell, t_here *here, int fd)
 	free_exit(shell);
 }
 
+// Esta função executa um comando de here_doc. Ela cria um processo filho, chama a função signal_handler para definir o sinal SIGHEREDOC, chama a função heredoc_reader para ler o here_doc e executa o comando. Após a execução do comando, o descritor de arquivo é restaurado.
 void	run_heredoc(t_shell *shell, t_here *here)
 {
 	int		fd;
